@@ -1,76 +1,36 @@
-<!-- Button trigger modal -->
-  
-  <!-- Modal -->
-  <div class="modal fade" id="create" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Agregrar Cliente</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <form action="{{route('home.store')}}" method="POST" enctype="multipart/form-data">
-            @csrf
+<!-- Modal: Agregar Cliente -->
+<div class="modal fade" id="create" tabindex="-1" role="dialog" aria-labelledby="createLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content clients-card">
+      <div class="modal-header">
+        <h5 class="modal-title clients-title" id="createLabel">Agregar Cliente</h5>
+        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <form action="{{ route('home.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
         <div class="modal-body">
-          <div class="mb-3">
-            <label for="" class="form-label">Nombre</label>
-            <input
-                type="text"
-                class="form-control"
-                name="nombre"
-                id=""
-                aria-describedby="helpId"
-                placeholder=""
-            />
-            
+          <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" name="nombre" id="nombre" class="clients-input" placeholder="Ingrese nombre" required>
           </div>
-
-          <div class="mb-3">
-            <label for="" class="form-label">Telefono</label>
-            <input
-                type="text"
-                class="form-control"
-                name="telefono"
-                id=""
-                aria-describedby="helpId"
-                placeholder=""
-            />
-            
+          <div class="form-group">
+            <label for="telefono">Teléfono</label>
+            <input type="text" name="telefono" id="telefono" class="clients-input" placeholder="Ingrese teléfono" required>
           </div>
-
-          <div class="mb-3">
-            <label for="" class="form-label">Correo</label>
-            <input
-                type="email"
-                class="form-control"
-                name="correo"
-                id=""
-                aria-describedby="helpId"
-                placeholder=""
-            />
-            
+          <div class="form-group">
+            <label for="correo">Correo</label>
+            <input type="email" name="correo" id="correo" class="clients-input" placeholder="correo@ejemplo.com" required>
           </div>
-          
-          <div class="mb-3">
-            <label for="" class="form-label">Cedula</label>
-            <input
-                type="text"
-                class="form-control"
-                name="cedula"
-                id=""
-                aria-describedby="helpId"
-                placeholder=""
-            />
-            
+          <div class="form-group">
+            <label for="cedula">Cédula</label>
+            <input type="text" name="cedula" id="cedula" class="clients-input" placeholder="Ingrese cédula" required>
           </div>
-
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-          <button type="submit" class="btn btn-primary">Guardar</button>
+          <button type="button" class="btn-secondary" data-dismiss="modal">Cerrar</button>
+          <button type="submit" class="btn-new">Guardar</button>
         </div>
-    </form>
-      </div>
+      </form>
     </div>
   </div>
+</div>

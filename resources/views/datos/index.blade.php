@@ -1,95 +1,90 @@
-@extends('home') {{-- Extiende la plantilla base --}}
+@extends('home')
 
-
+<!-- Inyectar CSS personalizado directamente -->
+<link rel="stylesheet" href="{{ asset('css/clients.css') }}">
+<style>
+  /* Estilos personalizados para la vista de Datos del Cliente */
+  .clients-container {
+    padding: 4rem 1rem;
+    background: #fefaf6;
+  }
+  .clients-card {
+    border: 2px solid #f97316;
+    background: rgba(255, 255, 255, 0.95);
+  }
+  .clients-input,
+  .clients-filter {
+    background: #fff7f0;
+    border-color: #f97316;
+  }
+  .clients-title {
+    color: #f97316;
+    margin-bottom: 1.5rem;
+  }
+</style>
 
 @section('content')
-<br><br>
-<form id="clienteForm">
-<div class="row">
-    <div class="col-md-1">
-        <select id="clienteSelect" class="form-control" onchange="cargarDatosCliente()">
-            <option value="">Seleccione un cliente</option>
-        </select>
-    </div>
-    <div class="col-md-5">
-        <!-- Name input -->
-        <div data-mdb-input-init class="form-outline">
-        <input type="text" id="form8Example1" class="form-control" />
-        <label class="form-label" for="form8Example1">Name</label>
+  <div class="clients-container">
+    <div class="clients-card">
+      <h2 class="clients-title">Datos del Cliente</h2>
+      <form id="clienteForm" class="space-y-6">
+        <div class="form-group">
+          <label for="clienteSelect" class="block font-medium text-gray-700">Seleccione Cliente</label>
+          <select id="clienteSelect" class="clients-filter w-full" onchange="cargarDatosCliente()">
+            <option value="">-- Seleccione un cliente --</option>
+          </select>
         </div>
-    </div>
-    <div class="col-md-5">
-        <!-- Email input -->
-        <div data-mdb-input-init class="form-outline">
-        <input type="email" id="form8Example2" class="form-control" />
-        <label class="form-label" for="form8Example2">Email address</label>
-        </div>
-    </div>
-    <div class="col-md-1"></div>
-</div>
 
-<hr />
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="form-group">
+            <label for="formNombre" class="block font-medium text-gray-700">Nombre</label>
+            <input type="text" id="formNombre" class="clients-input" placeholder="Nombre" readonly />
+          </div>
+          <div class="form-group">
+            <label for="formCorreo" class="block font-medium text-gray-700">Correo</label>
+            <input type="email" id="formCorreo" class="clients-input" placeholder="Correo" readonly />
+          </div>
+          <div class="form-group">
+            <label for="formTelefono" class="block font-medium text-gray-700">Teléfono</label>
+            <input type="text" id="formTelefono" class="clients-input" placeholder="Teléfono" readonly />
+          </div>
+          <div class="form-group">
+            <label for="formCedula" class="block font-medium text-gray-700">Cédula</label>
+            <input type="text" id="formCedula" class="clients-input" placeholder="Cédula" readonly />
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 
-<div class="row">
-    <div class="col-md-1"></div>
-    <div class="col-md-3">
-        <!-- Name input -->
-        <div data-mdb-input-init class="form-outline">
-        <input type="text" id="form8Example3" class="form-control" />
-        <label class="form-label" for="form8Example3">First name</label>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <!-- Name input -->
-        <div data-mdb-input-init class="form-outline">
-        <input type="text" id="form8Example4" class="form-control" />
-        <label class="form-label" for="form8Example4">Last name</label>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <!-- Email input -->
-        <div data-mdb-input-init class="form-outline">
-        <input type="email" id="form8Example5" class="form-control" />
-        <label class="form-label" for="form8Example5">Email address</label>
-        </div>
-    </div>
-    <div class="col-md-2"></div>
-</div>
-</form>
+  <script>
+    document.addEventListener("DOMContentLoaded", cargarClientes);
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        cargarClientes(); // Llama a la función cuando la página cargue
-    });
-    
     function cargarClientes() {
-        fetch('/cliente') // Ruta en Laravel para obtener los clientes
-            .then(response => response.json())
-            .then(clientes => {
-                console.log(clientes);
-                let select = document.getElementById("clienteSelect");
-                clientes.forEach(cliente => {
-                    let option = document.createElement("option");
-                    option.value = cliente.id;
-                    option.textContent = cliente.nombre;
-                    select.appendChild(option);
-                });
-            })
-            .catch(error => console.error("Error cargando clientes:", error));
+      fetch('/cliente')
+        .then(r => r.json())
+        .then(clientes => {
+          const select = document.getElementById('clienteSelect');
+          clientes.forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c.id;
+            opt.textContent = c.nombre;
+            select.appendChild(opt);
+          });
+        });
     }
-    
+
     function cargarDatosCliente() {
-        let id = document.getElementById("clienteSelect").value;
-        if (!id) return;
-    
-        fetch(`/cliente/${id}`) // Ruta para obtener los datos del cliente
-            .then(response => response.json())
-            .then(cliente => {
-                document.getElementById("form8Example1").value = cliente.nombre;
-                document.getElementById("form8Example2").value = cliente.telefono;
-                document.getElementById("form8Example3").value = cliente.correo;
-            })
-            .catch(error => console.error("Error cargando datos del cliente:", error));
+      const id = document.getElementById('clienteSelect').value;
+      if (!id) return;
+      fetch(`/cliente/${id}`)
+        .then(r => r.json())
+        .then(c => {
+          document.getElementById('formNombre').value = c.nombre;
+          document.getElementById('formCorreo').value = c.correo;
+          document.getElementById('formTelefono').value = c.telefono;
+          document.getElementById('formCedula').value = c.cedula;
+        });
     }
-    </script>
+  </script>
 @endsection

@@ -1,0 +1,141 @@
+/* login.css */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #f3f4f6;
+}
+
+/* Contenedor principal: 2 columnas */
+.login-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* IZQUIERDA: tarjeta blanca con form */
+.login-left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3f4f6;
+  padding: 2rem;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 24rem;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  padding: 2rem;
+}
+
+/* Logo dentro del card */
+.login-card .logo {
+  display: block;
+  margin: 0 auto 1rem;
+  height: 20rem;
+}
+
+/* Form y encabezado */
+.login-card h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.form-group + .form-group {
+  margin-top: 1rem;
+}
+
+.login-card label {
+  display: block;
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin-bottom: 0.25rem;
+}
+
+.login-card input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  background: #f9fafb;
+  transition: border-color .2s, box-shadow .2s;
+}
+
+.login-card input:focus {
+  outline: none;
+  border-color: #f97316;
+  box-shadow: 0 0 0 3px rgba(249,115,22,0.3);
+}
+
+/* Botón principal */
+.login-card button {
+  width: 100%;
+  padding: 0.75rem;
+  background: #f97316;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background .2s, transform .1s;
+  margin-top: 1.5rem;
+}
+
+.login-card button:hover {
+  background: #ea580c;
+}
+
+.login-card button:active {
+  transform: scale(0.98);
+}
+
+/* Links de abajo */
+.login-card .links {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.875rem;
+}
+
+.login-card .links a {
+  color: #f97316;
+  text-decoration: none;
+}
+
+.login-card .links a:hover {
+  text-decoration: underline;
+}
+
+/* DERECHA: imagen de entrenador */
+.login-right {
+  flex: 1;
+  background: url('../img/trainer.jpg') 50% 0%/cover no-repeat;
+  position: relative;
+}
+
+/* overlay oscuro sobre la imagen */
+.login-right::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+}
+
+/* RESPONSIVE: en pantallas pequeñas apila y oculta la imagen */
+@media (max-width: 768px) {
+  .login-container {
+    flex-direction: column;
+  }
+  .login-left,
+  .login-right {
+    width: 100%;
+  }
+  .login-right {
+    display: none;
+  }
+}

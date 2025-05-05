@@ -1,0 +1,201 @@
+/* clients.css */
+/* Reset ligero */
+* {
+    box-sizing: border-box;
+  }
+  
+  /* Contenedor general centrado con padding */
+  .clients-container {
+    display: flex;
+    justify-content: center;
+    padding: 3rem 1rem;
+    background: #f3f4f6;
+  }
+  
+  /* Tarjeta blanca translúcida, con padding y sombra */
+  .clients-card {
+    width: 100%;
+    max-width: 1100px;
+    background: rgba(255,255,255,0.98);
+    border-radius: 1rem;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    padding: 2.5rem;
+  }
+  
+  /* Encabezado centrado con margen inferior */
+  .clients-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  .clients-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1f2937;
+  }
+  
+  /* Zona de acciones */
+  .clients-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  /* Botón “Nuevo Cliente” */
+  .btn-new {
+    background: #f97316;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .2s, transform .1s;
+  }
+  .btn-new:hover {
+    background: #ea580c;
+  }
+  .btn-new:active {
+    transform: scale(0.97);
+  }
+  
+  /* Grupo de búsqueda y filtro */
+  .search-filter-group {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .clients-search,
+  .clients-filter {
+    padding: 0.6rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    background: #fff;
+    font-size: 0.95rem;
+    transition: border-color .2s;
+  }
+  .clients-search:focus,
+  .clients-filter:focus {
+    border-color: #f97316;
+    outline: none;
+  }
+  
+  /* Tabla con espacio entre filas y bordes suaves */
+  .clients-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 0.5rem;
+  }
+  .clients-table th,
+  .clients-table td {
+    padding: 0.75rem 1rem;
+    background: white;
+    font-size: 0.95rem;
+    color: #374151;
+  }
+  .clients-table th {
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #4b5563;
+    background: transparent;
+    border-bottom: none;
+  }
+  .clients-table tr:hover td {
+    background: rgba(249,115,22,0.05);
+  }
+  
+  /* Celdas de acciones */
+  .actions-cell {
+    display: flex;
+    gap: 0.5rem;
+  }
+  /* Botones editar/eliminar */
+  .btn-edit,
+  .btn-delete {
+    padding: 0.5rem 0.8rem;
+    border: none;
+    border-radius: 0.4rem;
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background .2s, transform .1s;
+  }
+  .btn-edit {
+    background: #10b981;
+  }
+  .btn-edit:hover {
+    background: #059669;
+  }
+  .btn-edit:active {
+    transform: scale(0.97);
+  }
+  .btn-delete {
+    background: #ef4444;
+  }
+  .btn-delete:hover {
+    background: #dc2626;
+  }
+  .btn-delete:active {
+    transform: scale(0.97);
+  }
+  
+  /* Estilos del modal/formulario de “Agregar Cliente” */
+  .clients-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    background: #f9fafb;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .clients-input:focus {
+    outline: none;
+    border-color: #f97316;
+    box-shadow: 0 0 0 3px rgba(249,115,22,0.3);
+  }
+  
+  /* Botón secundario (Cerrar en modal) */
+  .btn-secondary {
+    background: #6b7280;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background .2s, transform .1s;
+  }
+  .btn-secondary:hover {
+    background: #4b5563;
+  }
+  .btn-secondary:active {
+    transform: scale(0.97);
+  }
+  
+  /* Responsive: apila controles y tabla compacta */
+  @media (max-width: 768px) {
+    .clients-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .search-filter-group {
+      flex-direction: column;
+    }
+    .clients-search,
+    .clients-filter,
+    .btn-new {
+      width: 100%;
+    }
+    .clients-table th,
+    .clients-table td {
+      padding: 0.6rem;
+      font-size: 0.85rem;
+    }
+    
+  }
+  
