@@ -3,6 +3,12 @@
 @section('content')
   <!-- Carga CSS personalizado directamente -->
   <link rel="stylesheet" href="{{ asset('css/clients.css') }}">
+  <!-- Sombra naranja para el card -->
+  <style>
+    .clients-card {
+      box-shadow: 0 4px 15px rgba(249, 115, 22, 0.6);
+    }
+  </style>
 
   <div class="clients-container">
     <div class="clients-card">
@@ -13,7 +19,7 @@
 
       <!-- Zona de acciones: Nuevo y filtros -->
       <div class="clients-actions">
-        <button type="button" class="btn-new" data-toggle="modal" data-target="#create">
+        <button type="button" class="btn-new" data-bs-toggle="modal" data-bs-target="#create">
           + Nuevo Cliente
         </button>
         <div class="search-filter-group">
@@ -52,10 +58,10 @@
                 <td>{{ $cliente->cedula }}</td>
                 <td>{{ $cliente->clases }}</td>
                 <td class="actions-cell">
-                  <button type="button" class="btn-edit" data-toggle="modal" data-target="#edit{{ $cliente->id }}">
+                  <button type="button" class="btn-edit" data-bs-toggle="modal" data-bs-target="#edit{{ $cliente->id }}">
                     Editar
                   </button>
-                  <button type="button" class="btn-delete" data-toggle="modal" data-target="#delete{{ $cliente->id }}">
+                  <button type="button" class="btn-delete" data-bs-toggle="modal" data-bs-target="#delete{{ $cliente->id }}">
                     Eliminar
                   </button>
                 </td>
