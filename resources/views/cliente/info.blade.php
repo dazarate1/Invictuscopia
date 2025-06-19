@@ -6,7 +6,7 @@
         <h5 class="modal-title clients-title" id="editLabel{{ $cliente->id }}">Editar Cliente</h5>
         <button type="button" class="btn-close" data-dismiss="modal" aria-label="Cerrar"></button>
       </div>
-      <form action="{{ route('home.update', $cliente->id) }}" method="POST" enctype="multipart/form-data">
+      <form action="{{ route('cliente.update', $cliente->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="modal-body">
@@ -75,7 +75,7 @@
         <h5 class="modal-title clients-title" id="deleteLabel{{ $cliente->id }}">Eliminar Cliente</h5>
         <button type="button" class="btn-close" data-dismiss="modal" aria-label="Cerrar"></button>
       </div>
-      <form action="{{ route('home.destroy', $cliente->id) }}" method="POST">
+      <form action="{{ route('cliente.destroy', $cliente->id) }}" method="POST">
         @csrf
         @method('DELETE')
         <div class="modal-body">

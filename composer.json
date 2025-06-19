@@ -60,12 +60,6 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
-<<<<<<< HEAD
-        },
-        "platform": {
-            "php": "8.3.0"
-=======
->>>>>>> a3054ac226a478ba8a4adf21693540b0ab300e3e
         }
     },
     "minimum-stability": "stable",

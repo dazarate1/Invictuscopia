@@ -17,68 +17,125 @@
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">  
-    @stack('styles')                                        
+    @stack('styles')      
+    <style>
+          html, body { height: 100%; margin: 0; font-family: 'Poppins', sans-serif; }
+          .app-layout { display: flex; min-height: 100vh; }
+          .sidebar {
+            width: 240px;
+            background-color: #343a40;
+            display: flex;
+            flex-direction: column;
+            padding-top: 1rem;
+          }
+          .sidebar a {
+            color: #f8f9fa;
+            text-decoration: none;
+            padding: 0.75rem 1.25rem;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+            transition: background 0.2s, border-left-color 0.2s;
+          }
+          .sidebar a:hover {
+            background-color: #495057;
+            border-left-color: #f97316;
+          }
+          .sidebar a.active {
+            background-color: #212529;
+            border-left-color: #f97316;
+          }
+          .profile-section {
+            margin-top: auto;
+            border-top: 1px solid #495057;
+          }
+          .profile-section form button {
+            display: block;
+            padding: 0.75rem 1.25rem;
+            color: #f8f9fa;
+            background: none;
+            border: none;
+            text-align: left;
+            width: 100%;
+            font-size: 0.95rem;
+          }
+          .profile-section form button:hover {
+            background-color: #495057;
+            text-decoration: none;
+          }
+          .main-content {
+            flex: 1;
+            background-color: #f8f9fa;
+            padding: 2rem;
+          }
+          /* Dashboard styles */
+          .dashboard-top {
+            text-align: center;
+            margin-bottom: 2rem;
+          }
+          .dashboard-top h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #1f2937;
+          }
+          .dashboard-top p {
+            font-size: 1.1rem;
+            color: #4b5563;
+          }
+          .dashboard-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            width: 100%;
+          }
+          .dashboard-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+            max-width: 1200px;
+            width: 100%;
+          }
+          .dashboard-card {
+            flex: 1 1 280px;
+            max-width: 350px;
+          }
+          .dashboard-card .card-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+          }
+          .dashboard-card .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #1f2937;
+          }
+          .dashboard-card ul li {
+            font-size: 1rem;
+            color: #4b5563;
+            margin-bottom: 0.5rem;
+          }
+        </style>                                  
 </head>
 <body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
-
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
+        <div class="app-layout">
+          <nav class="sidebar">
+            <a href="{{ url('/home') }}" class="{{ request()->is('home') ? 'active' : '' }}">Home</a>
+            <a href="{{ url('/cliente') }}" class="{{ request()->is('cliente') ? 'active' : '' }}">Lista de Clientes</a>
+            <a href="{{ url('/datos') }}" class="{{ request()->is('datos') ? 'active' : '' }}">Datos</a>
+            <div class="profile-section">
+              <form method="POST" action="{{ url('/logout') }}">
+                @csrf
+                <button type="submit">Logout</button>
+              </form>
             </div>
-        </nav>
-
-        <!--<main class="py-4">
+          </nav>
             @yield('content')
-        </main>-->
-    </div>
-    @yield('content')
-</body>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    </body>
 </html>

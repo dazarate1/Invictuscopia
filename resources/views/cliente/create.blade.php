@@ -6,7 +6,7 @@
         <h5 class="modal-title clients-title" id="createLabel">Agregar Cliente</h5>
         <button type="button" class="btn-close" data-dismiss="modal" aria-label="Cerrar"></button>
       </div>
-      <form action="{{ route('home.store') }}" method="POST" enctype="multipart/form-data">
+      <form action="{{ route('cliente.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="modal-body">
           <div class="form-group">

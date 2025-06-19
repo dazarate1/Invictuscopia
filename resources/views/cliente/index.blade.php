@@ -1,4 +1,5 @@
-@extends('home')
+@extends('layouts.app')
+@section('title', 'Cliente')
 
 @section('content')
   <!-- Carga CSS personalizado directamente -->

@@ -13,4 +13,8 @@ class cliente extends Model
     protected $fillable = ['nombre', 'telefono', 'correo','cedula','clases'];
     protected $guarded = [];
     public $timestamps = false;
+
+    protected $casts = [
+        'fecha_nacimiento' => 'date',
+    ];
 }
