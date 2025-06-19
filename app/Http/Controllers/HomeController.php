@@ -31,19 +31,26 @@ class HomeController extends Controller
 
         // Filtrar y ordenar clientes con cumpleaños en los próximos 7 días
         $cumpleaneros = $clientes->filter(function ($cliente) use ($hoy) {
-            $cumpleEsteAnio = Carbon::createFromDate($hoy->year, date('m', strtotime($cliente->fecha_nacimiento)), date('d', strtotime($cliente->fecha_nacimiento)));
-            // Si el cumpleaños ya pasó este año, moverlo al próximo
+        $cumpleEsteAnio = Carbon::createFromDate(
+                $hoy->year,
+                date('m', strtotime($cliente->fecha_nacimiento)),
+                date('d', strtotime($cliente->fecha_nacimiento))
+            );
             if ($cumpleEsteAnio->lessThan($hoy)) {
                 $cumpleEsteAnio->addYear();
             }
             return $hoy->diffInDays($cumpleEsteAnio) <= 7;
-        })->sortBy(function ($cliente) use ($hoy) {
-            $cumpleEsteAnio = Carbon::createFromDate($hoy->year, date('m', strtotime($cliente->fecha_nacimiento)), date('d', strtotime($cliente->fecha_nacimiento)));
+            })->sortBy(function ($cliente) use ($hoy) {
+            $cumpleEsteAnio = Carbon::createFromDate(
+                $hoy->year,
+                date('m', strtotime($cliente->fecha_nacimiento)),
+                date('d', strtotime($cliente->fecha_nacimiento))
+            );
             if ($cumpleEsteAnio->lessThan($hoy)) {
                 $cumpleEsteAnio->addYear();
             }
             return $hoy->diffInDays($cumpleEsteAnio);
-        });
+         });
 
         $clientesConPocasClases = Cliente::where('clases', '<=', 5)->get();
 

@@ -8,11 +8,11 @@ use App\Http\Controllers\DatosController;
 Route::get('/', fn() => view('auth.login'));
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+/*Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/cliente', function () {$clientes = App\Models\Cliente::all();return view('cliente.index', compact('clientes'));})->name('cliente.index');
 Route::get('/cliente/{id}', [App\Http\Controllers\ClienteController::class, 'GetClient'])->name('cliente.obtener');
 Route::get('/datos', [App\Http\Controllers\DatosController::class, 'index'])->name('datos.index');
-Route::resource('cliente', ClienteController::class);
+Route::resource('cliente', ClienteController::class);*/
 // Dashboard
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])
     ->name('home');

@@ -1,0 +1,30 @@
+[33mcommit 84cae9ba7974607f5e48e96029d0f9374db40eae[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mrama-copia[m[33m, [m[1;32mmain[m[33m)[m
+Author: Daniel Florez <danielflrz95gmail.com>
+Date:   Thu Jun 19 09:47:25 2025 -0500
+
+    Logica basica de dashboard
+
+[33mcommit 068f91245d2af8be8b8dde02e9eeabd3848f8bc9[m[33m ([m[1;31minvictus-copia/main[m[33m, [m[1;31minvictus-copia/HEAD[m[33m)[m
+Author: David Zarate <dkvanuntt@gmail.com>
+Date:   Thu Jun 5 12:38:35 2025 -0500
+
+    Subiendo versión inicial con sidebar, dashboard y pantallas de clientes/datos
+
+[33mcommit e3f4db4c0e37909132930184ca3a2c0a50808f5a[m
+Author: David Zarate <dkvanuntt@gmail.com>
+Date:   Mon May 5 13:29:31 2025 -0500
+
+    Diseño: listado, modales y vista Datos del Cliente con línea gráfica uniforme
+
+[33mcommit 89b57c8498bb9766f9af4576adf0bc9ef21ac61d[m
+Merge: 98ad537 a3054ac
+Author: David Zarate <dkvanuntt@gmail.com>
+Date:   Mon May 5 09:58:21 2025 -0500
+
+    Resuelto conflicto de merge entre local y origin/main
+
+[33mcommit 98ad53729a080544f651bf6d84fe010537346d9b[m
+Author: David Zarate <dkvanuntt@gmail.com>
+Date:   Mon May 5 09:54:15 2025 -0500
+
+    Initial commit
