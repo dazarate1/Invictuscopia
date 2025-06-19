@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\cliente;
+use App\Models\Cliente;
 use Illuminate\Http\Request;
 
 class ClienteController extends Controller
@@ -14,52 +14,24 @@ class ClienteController extends Controller
     {
         $clientes = Cliente::all();
         return view('cliente.index', compact('clientes'));
-        //
     }
 
+    /**
+     * Devuelve lista de clientes en JSON.
+     */
     public function ListClients()
     {
         $clientes = Cliente::all();
         return response()->json($clientes);
     }
 
-    public function GetClient($id){
-        $cliente = Cliente::find($id);
-        return response()->json($cliente);
-    }
-
-    // Obtener cliente por código
-    public function GetClientData($code)
-    {
-        $client = cliente::where('cedula', $code)->first();
-        
-        if (!$client) {
-            return response()->json(['error' => 'Cliente no encontrado'], 404);
-        }
-
-        return response()->json($client);
-    }
-
-    public function updateValue(Request $request, $code)
-    {
-        $client = cliente::where('cedula', $code)->first();
-
-        if (!$client) {
-            return response()->json(['error' => 'Cliente no encontrado'], 404);
-        }
-
-        $client->clases = $request->input('value'); // Recibe el nuevo valor desde el frontend
-        $client->save();
-
-        return response()->json(['message' => 'Valor actualizado', 'new_value' => $client->clases]);
-    }
-
     /**
-     * Show the form for creating a new resource.
+     * Devuelve un cliente por ID en JSON.
      */
-    public function create()
+    public function GetClient($id)
     {
-        //
+        $cliente = Cliente::findOrFail($id);
+        return response()->json($cliente);
     }
 
     /**
@@ -67,32 +39,16 @@ class ClienteController extends Controller
      */
     public function store(Request $request)
     {
-        $clientes = new Cliente;
-        $clientes->nombre =  $request->input('nombre');
-        $clientes->telefono = $request->input('telefono');
-        $clientes->correo = $request->input('correo');
-        $clientes->cedula = $request->input('cedula');
-        $clientes->plan = '16 clases';
-        $clientes->clases = '16';
-        $clientes->save();
+        $cliente = new Cliente;
+        $cliente->nombre   = $request->input('nombre');
+        $cliente->telefono = $request->input('telefono');
+        $cliente->correo   = $request->input('correo');
+        $cliente->cedula   = $request->input('cedula');
+        $cliente->plan     = '16 clases';
+        $cliente->clases   = '16';
+        $cliente->save();
+
         return redirect()->back();
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(cliente $cliente)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -100,13 +56,13 @@ class ClienteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $clientes = Cliente::find($id);
-        $clientes->nombre =  $request->input('nombre');
-        $clientes->telefono = $request->input('telefono');
-        $clientes->correo = $request->input('correo');
-        $clientes->update();
+        $cliente = Cliente::findOrFail($id);
+        $cliente->nombre   = $request->input('nombre');
+        $cliente->telefono = $request->input('telefono');
+        $cliente->correo   = $request->input('correo');
+        $cliente->save();
+
         return redirect()->back();
-        //
     }
 
     /**
@@ -114,9 +70,24 @@ class ClienteController extends Controller
      */
     public function destroy($id)
     {
-        $clientes = Cliente::find($id);
-        $clientes->delete();
+        $cliente = Cliente::findOrFail($id);
+        $cliente->delete();
+
         return redirect()->back();
-        //
+    }
+
+    // Métodos adicionales para API
+    public function GetClientData($code)
+    {
+        $client = Cliente::where('cedula', $code)->firstOrFail();
+        return response()->json($client);
+    }
+
+    public function updateValue(Request $request, $code)
+    {
+        $client = Cliente::where('cedula', $code)->firstOrFail();
+        $client->clases = $request->input('value');
+        $client->save();
+        return response()->json(['message' => 'Valor actualizado', 'new_value' => $client->clases]);
     }
 }

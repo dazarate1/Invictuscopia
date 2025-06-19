@@ -4,7 +4,7 @@
     <div class="modal-content clients-card">
       <div class="modal-header">
         <h5 class="modal-title clients-title" id="createLabel">Agregar Cliente</h5>
-        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Cerrar"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <form action="{{ route('cliente.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
@@ -27,7 +27,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn-secondary" data-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
           <button type="submit" class="btn-new">Guardar</button>
         </div>
       </form>
