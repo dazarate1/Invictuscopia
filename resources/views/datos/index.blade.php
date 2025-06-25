@@ -1,4 +1,4 @@
-@extends('home')
+@extends('layouts.app')
 
 @section('content')
   <!-- Carga CSS personalizado directamente -->
@@ -46,17 +46,46 @@
     .form-group {
       margin-bottom: 1.5rem;
     }
+
+    /*Estilos del buscador de clientes*/
+    .autocomplete-results {
+    list-style: none;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 0;
+    margin: 0;
+    background-color: white;
+    position: absolute;
+    z-index: 1000;
+    width: 100%;
+    }
+
+    .autocomplete-results li {
+      padding: 8px;
+      cursor: pointer;
+    }
+
+    .autocomplete-results li:hover {
+      background-color: #f0f0f0;
+    }
   </style>
 
   <div class="clients-container">
     <div class="clients-card">
       <h2 class="clients-title">Datos del Cliente</h2>
       <form id="clienteForm">
-        <div class="form-group">
+        <!--<div class="form-group">
           <label for="clienteSelect" class="form-label">Seleccione Cliente</label>
           <select id="clienteSelect" class="clients-filter" onchange="cargarDatosCliente()">
             <option value="">-- Seleccione un cliente --</option>
           </select>
+        </div>-->
+
+        <div class="form-group">
+          <label for="clienteSearch" class="form-label">Buscar Cliente</label>
+          <input type="text" id="clienteSearch" class="clients-filter" placeholder="Escriba nombre del cliente..." oninput="filtrarClientes()" autocomplete="off" />
+          <ul id="clienteResultados" class="autocomplete-results"></ul>
         </div>
 
         <div class="row g-4">
@@ -86,10 +115,18 @@
           </div>
         </div>
       </form>
+
+      <button id="btnAbrirModal" type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#metricsModal" disabled>
+        Agregar Métricas
+      </button>
+      <div id="historialMetricas" class="mt-4"></div>
+
     </div>
+
+    @include('datos.client-metrics')
   </div>
 
-  <script>
+ <!-- <script>
     document.addEventListener("DOMContentLoaded", cargarClientes);
     function cargarClientes() {
       fetch('/cliente')
@@ -116,5 +153,97 @@
           document.getElementById('formCedula').value = c.cedula;
         });
     }
-  </script>
+  </script>-->
+
+<!-- Script para busqueda de clientes por texto y sugerencias. Activacion de boton para apertura
+de modal para datos de valoracion
+-->
+<script>
+  let listaClientes = [];
+  let clienteSeleccionado = null;
+
+  document.addEventListener("DOMContentLoaded", () => {
+    fetch('/api/cliente') // cambia si usas otra ruta
+      .then(r => r.json())
+      .then(clientes => {
+        listaClientes = clientes;
+      });
+
+    // Manejo del formulario de métricas
+    document.getElementById('metricsForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const data = {
+        client_id: document.getElementById('clienteIdSeleccionado').value,
+        score_corporal: document.getElementById('score_corporal').value,
+        peso: document.getElementById('peso').value,
+        imc: document.getElementById('imc').value,
+        grasa_corporal: document.getElementById('grasa_corporal').value,
+        lvl_agua: document.getElementById('lvl_agua').value,
+        grasa_visc: document.getElementById('grasa_visc').value,
+        musculo: document.getElementById('musculo').value,
+        proteina: document.getElementById('proteina').value,
+        metabolismo: document.getElementById('metabolismo').value,
+        masa_osea: document.getElementById('masa_osea').value,
+      };
+
+      fetch('/storemetrics', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+        },
+        body: JSON.stringify(data)
+      })
+        .then(r => r.json())
+        .then(respuesta => {
+          alert("Métricas guardadas correctamente");
+          document.getElementById('metricsForm').reset();
+          bootstrap.Modal.getInstance(document.getElementById('metricsModal')).hide();
+        });
+    });
+  });
+
+  function filtrarClientes() {
+    const entrada = document.getElementById('clienteSearch').value.toLowerCase();
+    const resultados = document.getElementById('clienteResultados');
+    resultados.innerHTML = '';
+
+    if (entrada.length === 0) return;
+
+    const filtrados = listaClientes.filter(c =>
+      c.nombre.toLowerCase().includes(entrada)
+    );
+
+    filtrados.forEach(c => {
+      const li = document.createElement('li');
+      li.textContent = c.nombre;
+      li.classList.add('list-group-item');
+      li.onclick = () => seleccionarCliente(c);
+      resultados.appendChild(li);
+    });
+  }
+
+  function seleccionarCliente(cliente) {
+    clienteSeleccionado = cliente;
+    document.getElementById('clienteSearch').value = cliente.nombre;
+    document.getElementById('clienteResultados').innerHTML = '';
+
+    document.getElementById('formNombre').value = cliente.nombre;
+    document.getElementById('formCorreo').value = cliente.correo;
+    document.getElementById('formTelefono').value = cliente.telefono;
+    document.getElementById('formCedula').value = cliente.cedula;
+    document.getElementById('btnAbrirModal').disabled = false;
+
+    // Pasamos el ID al modal
+    document.getElementById('clienteIdSeleccionado').value = cliente.id;
+    fetch(`/cliente/${cliente.id}/metrics`)
+        .then(res => res.text())
+        .then(html => {
+            document.getElementById('historialMetricas').innerHTML = html;
+        });
+  }
+  
+</script>
+
 @endsection

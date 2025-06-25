@@ -17,4 +17,9 @@ class cliente extends Model
     protected $casts = [
         'fecha_nacimiento' => 'date',
     ];
+
+   public function metrics()
+    {
+        return $this->hasMany(Metrics::class, 'client_id');
+    }
 }
