@@ -118,8 +118,122 @@
             color: #4b5563;
             margin-bottom: 0.5rem;
           }
-        </style>                                  
+
+          .toast-success {
+            background: #28a745; /* verde éxito */
+            color: white;
+            border-radius: 8px;
+          }
+
+          .toast-error {
+            background: #dc3545 !important;
+            color: white;
+            border-radius: 8px;
+          }
+    </style>
+  <!-- Toastify CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+                                
 </head>
+
+@if(Auth::check()) <!-- Solo para usuarios logueados -->
+<script>
+  // Variable global para capturar el código
+  window.currentCode = "";
+
+  // Función toast personalizada
+  function mostrarToastSuccess(nombre, clasesRestantes) {
+    const toastContent = document.createElement("div");
+    toastContent.innerHTML = `
+      <div style="font-family: 'Segoe UI', sans-serif;">
+        <div style="color: black; font-weight: bold;">✅ Acceso permitido</div>
+        <div style="color: black;">${nombre} clases restantes: ${clasesRestantes}</div>
+      </div>
+    `;
+    Toastify({
+      node: toastContent,
+      duration: 5000,
+      gravity: "top",
+      position: "right",
+      close: false,
+      stopOnFocus: true,
+      className: "toast-success"
+    }).showToast();
+  }
+
+   function mostrarToastFail(nombre) {
+    const toastContent = document.createElement("div");
+    toastContent.innerHTML = `
+      <div style="font-family: 'Segoe UI', sans-serif;">
+        <div style="color: black; font-weight: bold;">❌ Acceso denegado</div>
+        <div style="color: black;">${nombre} ya no tiene clases disponibles.</div>
+      </div>
+    `;
+    Toastify({
+      node: toastContent,
+      duration: 5000,
+      gravity: "top",
+      position: "right",
+      close: false,
+      stopOnFocus: true,
+      className: "toast-error"
+    }).showToast();
+  }
+
+  // Escuchar teclas
+  document.addEventListener("keydown", async function(e) {
+    if (!isNaN(e.key)) {
+      window.currentCode += e.key;
+    }
+
+    if (e.key === "Enter" && window.currentCode !== "") {
+      const code = window.currentCode;
+      window.currentCode = ""; // limpiar para la siguiente lectura
+
+      try {
+        const response = await axios.post("/api/validate-access", { code });
+
+        if (response.data.access) {
+          const client = await axios.get(`/api/client/${code}`);
+          const clientData = client.data;
+
+          if (clientData.clases > 0) {
+            let newValue = clientData.clases - 1;
+            await axios.put(`/api/client/${code}`, { value: newValue });
+
+            // ✅ Toast de éxito
+            mostrarToastSuccess(clientData.nombre, newValue);
+          } else {
+            // ⚠️ Sin clases
+            mostrarToastFail(clientData.nombre);
+          }
+        } else {
+          // ❌ Acceso denegado
+          Toastify({
+            text: "❌ Acceso denegado",
+            duration: 5000,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#dc3545",
+            close: false
+          }).showToast();
+        }
+      } catch (error) {
+        // 🚫 Error en la petición
+        Toastify({
+          text: "🚫 Error al contactar con el servidor",
+          duration: 5000,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "#6c757d",
+          close: false
+        }).showToast();
+        console.error(error);
+      }
+    }
+  });
+</script>
+@endif
 <body>
       @auth
         <div class="app-layout">
@@ -136,9 +250,13 @@
           </nav>
       @endauth 
             @yield('content')
-        </div>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script> 
+      </div>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script> 
+      <!-- Toastify JS -->
+      <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 </body>
 </html>
