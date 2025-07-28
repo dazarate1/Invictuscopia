@@ -5,6 +5,7 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\DatosController;
 use App\Http\Controllers\MetricsController;
 
+
 // Página de login
 Route::get('/', fn() => view('auth.login'));
 Auth::routes();
@@ -53,3 +54,12 @@ Route::get('/datos', [DatosController::class, 'index'])
 //Routa de almacenamiento de metricas
 Route::post('/storemetrics', [MetricsController::class, 'store']);
 Route::get('/cliente/{id}/metrics', [MetricsController::class, 'showHistory']);
+
+Route::get('/pagos', function () {
+    return view('finanzas.pagos');
+})->name('pagos.index');
+
+// Vista de Finanzas
+Route::get('/pagos', function() {
+    return view('finanzas.pagos');
+})->name('pagos');
