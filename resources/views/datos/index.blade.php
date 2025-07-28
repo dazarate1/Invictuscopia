@@ -1,13 +1,12 @@
 @extends('layouts.app')
 
-@section('content')
-  <!-- Carga CSS personalizado directamente -->
-  <link rel="stylesheet" href="{{ asset('css/clients.css') }}">
+@section('content')  
   <style>
     /* Estilos generales para tarjetas de cliente */
     .clients-container {
       padding: 4rem 1rem;
       background: #f3f4f6;
+      width: -webkit-fill-available;
     }
     .clients-card {
       max-width: 800px;
@@ -46,7 +45,15 @@
     .form-group {
       margin-bottom: 1.5rem;
     }
-
+    /* Botón primario con fondo naranja oscuro */
+      .btn.btn-primary.mt-2 {
+        background-color:#f97316;
+        border-color: #f97316;
+      }
+      .btn.btn-primary.mt-2:hover {
+        background-color: #f97316;
+        border-color: #f97316;
+      }
     /*Estilos del buscador de clientes*/
     .autocomplete-results {
     list-style: none;
@@ -58,7 +65,7 @@
     background-color: white;
     position: absolute;
     z-index: 1000;
-    width: 100%;
+    width: 30%;
     }
 
     .autocomplete-results li {

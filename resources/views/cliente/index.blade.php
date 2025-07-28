@@ -2,13 +2,19 @@
 @section('title', 'Cliente')
 
 @section('content')
-  <!-- Carga CSS personalizado directamente -->
-  <link rel="stylesheet" href="{{ asset('css/clients.css') }}">
   <!-- Sombra naranja para el card -->
   <style>
+    .clients-container {
+    display: flex;
+    width: -webkit-fill-available !important;
+    justify-content: center;
+    padding: 3rem 1rem;
+    background: #f3f4f6;
+    }
     .clients-card {
       box-shadow: 0 4px 15px rgba(249, 115, 22, 0.6);
     }
+
   </style>
 
   <div class="clients-container">

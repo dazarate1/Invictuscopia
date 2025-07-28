@@ -136,8 +136,8 @@
           
 
       <!-- Clientes con ≤ 5 clases -->
-      <div class="card shadow-sm dashboard-card">
-        <div class="card-body text-center">
+      <div class="col-md-6">
+        <div class="module-section">
           <h5 class="card-title">Clientes con menos de 5 clases</h5>
           @if($clientesConPocasClases->isEmpty())
             <p>No hay clientes con menos de 5 clases.</p>

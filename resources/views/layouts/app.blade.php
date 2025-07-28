@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Invictus') }}</title>
+    <title>Invictus Gym</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
@@ -19,7 +19,9 @@
     <!-- Scripts -->
    <!-- @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">  -->
-    @stack('styles')      
+    @stack('styles')  
+    <link rel="icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon"> 
+    
     <style>
           html, body { height: 100%; margin: 0; font-family: 'Poppins', sans-serif; }
           .app-layout { display: flex; min-height: 100vh; }

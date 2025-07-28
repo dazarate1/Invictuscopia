@@ -52,7 +52,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-success">Guardar</button>
+          <button type="submit" style="background: #f97316; color: #fff; padding: .5rem 1rem; border: none; border-radius: .25rem;">Guardar</button>
         </div>
       </div>
     </form>
