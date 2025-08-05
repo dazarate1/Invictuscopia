@@ -71,6 +71,19 @@
     }
   </style>
 
+  <!-- Toast para notificaciones -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1055">
+  <div id="toastSuccess" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">
+        Métricas guardadas correctamente.
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+    </div>
+  </div>
+</div>
+
+
   <div class="clients-container">
     <div class="clients-card">
       <h2 class="clients-title">Datos del Cliente</h2>
@@ -119,7 +132,7 @@
       <button id="btnAbrirModal" type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#metricsModal" disabled>
         Agregar Métricas
       </button>
-      <div id="historialMetricas" class="mt-4"></div>
+      <div id="historialMetricas" class="mt-4" style="display: none;"></div>
 
     </div>
 
@@ -197,9 +210,19 @@ de modal para datos de valoracion
       })
         .then(r => r.json())
         .then(respuesta => {
-          alert("Métricas guardadas correctamente");
           document.getElementById('metricsForm').reset();
           bootstrap.Modal.getInstance(document.getElementById('metricsModal')).hide();
+
+          metricsSuccess();
+
+          if(clienteSeleccionado && clienteSeleccionado.id) {
+            fetch(`/cliente/${clienteSeleccionado.id}/metrics`)
+            .then(res => res.text())
+            .then(html =>
+              {
+              document.getElementById('historialMetricas').innerHTML = html;
+            })
+          }
         });
     });
   });
@@ -240,8 +263,15 @@ de modal para datos de valoracion
     fetch(`/cliente/${cliente.id}/metrics`)
         .then(res => res.text())
         .then(html => {
+            document.getElementById('historialMetricas').style.display = 'block';
             document.getElementById('historialMetricas').innerHTML = html;
         });
+  }
+
+  function metricsSuccess() {
+    const toastElement = document.getElementById('toastSuccess');
+    const toast = new bootstrap.Toast(toastElement);
+    toast.show();
   }
   
 </script>

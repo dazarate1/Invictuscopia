@@ -24,76 +24,202 @@
 
 @foreach($metricas as $metrica)
     <tr>
-        {{-- SCORE CORPORAL (flecha verde si sube) --}}
+        {{-- SCORE CORPORAL (flecha verde si sube, roja si baja) --}}
         <td>
-            {{ $metrica->score_corporal }}
-            @if($anterior && $metrica->score_corporal > $anterior->score_corporal)
-                <span style="color:green;"><img src="{{ asset('img\green_arrow_up.svg') }}"></span>
-            @endif
+            @php
+                $color = ''; $flecha = '';
+                if ($anterior) {
+                    if ($metrica->score_corporal > $anterior->score_corporal) {
+                        $color = 'green';
+                        $flecha = asset('img/green_arrow_up.svg');
+                    } elseif ($metrica->score_corporal < $anterior->score_corporal) {
+                        $color = 'red';
+                        $flecha = asset('img/red_arrow_down.svg');
+                    }
+                }
+            @endphp
+            <span style="color: {{ $color }}">
+                {{ $metrica->score_corporal }}
+                @if($flecha)
+                    <img src="{{ $flecha }}" alt="Flecha" />
+                @endif
+            </span>
         </td>
 
-        {{-- PESO (flecha roja si sube) --}}
+        {{-- PESO (flecha roja si sube, verde si baja) --}}
         <td>
-            {{ $metrica->peso }}
-            @if($anterior && $metrica->peso > $anterior->peso)
-                <span style="color:red;"><img src="{{ asset('img\red_arrow_up.svg') }}"></span>
-            @endif
+            @php
+                $color = ''; $flecha = '';
+                if ($anterior) {
+                    if ($metrica->peso > $anterior->peso) {
+                        $color = 'red';
+                        $flecha = asset('img\red_arrow_up.svg');
+                    } elseif ($metrica->peso < $anterior->peso) {
+                        $color = 'green';
+                        $flecha = asset('img\green_arrow_down.svg');
+                    }
+                }
+            @endphp
+            <span style="color: {{ $color }}">
+                {{ $metrica->peso }}
+                @if($flecha)
+                    <img src="{{ $flecha }}" alt="Flecha" />
+                @endif
+            </span>
         </td>
 
-        {{-- IMC (roja si sube) --}}
+        {{-- IMC (roja si sube, verde si baja) --}}
         <td>
-            {{ $metrica->imc }}
-            @if($anterior && $metrica->imc > $anterior->imc)
-                <span style="color:red;"><img src="{{ asset('img\red_arrow_up.svg') }}"></span>
-            @endif
+            @php
+                $color = ''; $flecha = '';
+                if ($anterior) {
+                    if ($metrica->imc > $anterior->imc) {
+                        $color = 'red';
+                        $flecha = asset('img\red_arrow_up.svg');
+                    } elseif ($metrica->imc < $anterior->imc) {
+                        $color = 'green';
+                        $flecha = asset('img\green_arrow_down.svg');
+                    }
+                }
+            @endphp
+            <span style="color: {{ $color }}">
+                {{ $metrica->imc}}
+                @if($flecha)
+                    <img src="{{ $flecha }}" alt="Flecha" />
+                @endif
+            </span>
         </td>
 
-        {{-- GRASA CORPORAL (roja si sube) --}}
+        {{-- GRASA CORPORAL (roja si sube, verde si baja) --}}
         <td>
-            {{ $metrica->grasa_corporal }}
-            @if($anterior && $metrica->grasa_corporal > $anterior->grasa_corporal)
-                <span style="color:red;"><img src="{{ asset('img\red_arrow_up.svg') }}"></span>
-            @endif
+            @php
+                $color = ''; $flecha = '';
+                if ($anterior) {
+                    if ($metrica->grasa_corporal > $anterior->grasa_corporal) {
+                        $color = 'red';
+                        $flecha = asset('img\red_arrow_up.svg');
+                    } elseif ($metrica->grasa_corporal < $anterior->grasa_corporal) {
+                        $color = 'green';
+                        $flecha = asset('img\green_arrow_down.svg');
+                    }
+                }
+            @endphp
+            <span style="color: {{ $color }}">
+                {{ $metrica->grasa_corporal}}
+                @if($flecha)
+                    <img src="{{ $flecha }}" alt="Flecha" />
+                @endif
+            </span>
         </td>
 
-        {{-- NIVEL DE AGUA (verde si sube) --}}
+        {{-- NIVEL DE AGUA (verde si sube, roja si baja) --}}
         <td>
-            {{ $metrica->lvl_agua }}
-            @if($anterior && $metrica->lvl_agua > $anterior->lvl_agua)
-                <span style="color:green;"><img src="{{ asset('img\green_arrow_up.svg') }}"></span>
-            @endif
+            @php
+                $color = ''; $flecha = '';
+                if ($anterior) {
+                    if ($metrica->lvl_agua > $anterior->lvl_agua) {
+                        $color = 'green';
+                        $flecha = asset('img/green_arrow_up.svg');
+                    } elseif ($metrica->lvl_agua < $anterior->lvl_agua) {
+                        $color = 'red';
+                        $flecha = asset('img/red_arrow_down.svg');
+                    }
+                }
+            @endphp
+            <span style="color: {{ $color }}">
+                {{ $metrica->lvl_agua }}
+                @if($flecha)
+                    <img src="{{ $flecha }}" alt="Flecha" />
+                @endif
+            </span>
         </td>
 
-        {{-- GRASA VISCERAL (roja si sube) --}}
+        {{-- GRASA VISCERAL (roja si sube, verde si baja) --}}
         <td>
-            {{ $metrica->grasa_visc }}
-            @if($anterior && $metrica->grasa_visc > $anterior->grasa_visc)
-                <span style="color:red;"><img src="{{ asset('img\red_arrow_up.svg') }}"></span>
-            @endif
+            @php
+                $color = ''; $flecha = '';
+                if ($anterior) {
+                    if ($metrica->grasa_visc > $anterior->grasa_visc) {
+                        $color = 'red';
+                        $flecha = asset('img\red_arrow_up.svg');
+                    } elseif ($metrica->grasa_visc < $anterior->grasa_visc) {
+                        $color = 'green';
+                        $flecha = asset('img\green_arrow_down.svg');
+                    }
+                }
+            @endphp
+            <span style="color: {{ $color }}">
+                {{ $metrica->grasa_visc}}
+                @if($flecha)
+                    <img src="{{ $flecha }}" alt="Flecha" />
+                @endif
+            </span>
         </td>
 
-        {{-- MASA MUSCULAR (verde si sube) --}}
+        {{-- MASA MUSCULAR (verde si sube, roja si baja) --}}
         <td>
-            {{ $metrica->musculo }}
-            @if($anterior && $metrica->musculo > $anterior->musculo)
-                <span style="color:green;"><img src="{{ asset('img\green_arrow_up.svg') }}"></span>
-            @endif
+            @php
+                $color = ''; $flecha = '';
+                if ($anterior) {
+                    if ($metrica->musculo > $anterior->musculo) {
+                        $color = 'green';
+                        $flecha = asset('img/green_arrow_up.svg');
+                    } elseif ($metrica->musculo < $anterior->musculo) {
+                        $color = 'red';
+                        $flecha = asset('img/red_arrow_down.svg');
+                    }
+                }
+            @endphp
+            <span style="color: {{ $color }}">
+                {{ $metrica->musculo }}
+                @if($flecha)
+                    <img src="{{ $flecha }}" alt="Flecha" />
+                @endif
+            </span>
         </td>
 
-        {{-- PROTEÍNA (verde si sube) --}}
+        {{-- PROTEÍNA (verde si sube, roja si baja) --}}
         <td>
-            {{ $metrica->proteina }}
-            @if($anterior && $metrica->proteina > $anterior->proteina)
-                <span style="color:green;"><img src="{{ asset('img\green_arrow_up.svg') }}"></span>
-            @endif
+            @php
+                $color = ''; $flecha = '';
+                if ($anterior) {
+                    if ($metrica->proteina > $anterior->proteina) {
+                        $color = 'green';
+                        $flecha = asset('img/green_arrow_up.svg');
+                    } elseif ($metrica->proteina < $anterior->proteina) {
+                        $color = 'red';
+                        $flecha = asset('img/red_arrow_down.svg');
+                    }
+                }
+            @endphp
+            <span style="color: {{ $color }}">
+                {{ $metrica->proteina }}
+                @if($flecha)
+                    <img src="{{ $flecha }}" alt="Flecha" />
+                @endif
+            </span>
         </td>
 
-        {{-- METABOLISMO (verde si sube) --}}
+        {{-- METABOLISMO (verde si sube, roja si baja) --}}
         <td>
-            {{ $metrica->metabolismo }}
-            @if($anterior && $metrica->metabolismo > $anterior->metabolismo)
-                <span style="color:green;"><img src="{{ asset('img\green_arrow_up.svg') }}"></span>
-            @endif
+            @php
+                $color = ''; $flecha = '';
+                if ($anterior) {
+                    if ($metrica->metabolismo > $anterior->metabolismo) {
+                        $color = 'green';
+                        $flecha = asset('img/green_arrow_up.svg');
+                    } elseif ($metrica->metabolismo < $anterior->metabolismo) {
+                        $color = 'red';
+                        $flecha = asset('img/red_arrow_down.svg');
+                    }
+                }
+            @endphp
+            <span style="color: {{ $color }}">
+                {{ $metrica->metabolismo }}
+                @if($flecha)
+                    <img src="{{ $flecha }}" alt="Flecha" />
+                @endif
+            </span>
         </td>
 
         {{-- MASA ÓSEA (sin flechas por ahora) --}}

@@ -23,7 +23,8 @@ class MetricsController extends Controller
         $metrics->masa_osea                 = $request->input('masa_osea');
         $metrics->save();
 
-        return redirect()->back()->with('mensaje', 'Métricas guardadas correctamente');
+        //return redirect()->back()->with('mensaje', 'Métricas guardadas correctamente');
+         return response()->json(['success' => true, 'mensaje' => 'Métricas guardadas']);
         }catch (\Throwable $e) {
             return response()->json([
                 'error' => $e->getMessage(),
