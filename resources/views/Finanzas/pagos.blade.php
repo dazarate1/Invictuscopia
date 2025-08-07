@@ -50,8 +50,9 @@
       <select id="filterPlan" class="clients-filter">
         <option value="">Todos los Planes</option>
         <option value="Mensual">Mensual</option>
-        <option value="Semanal">Semanal</option>
-        <option value="Anual">Anual</option>
+        <option value="Pareja">Pareja</option>
+        <option value="Semi 12">Semi 12</option>
+        <option value="Semi 16">Semi 16</option>
       </select>
       <select id="filterAmount" class="clients-filter">
         <option value="">Todos los Montos</option>
@@ -73,11 +74,30 @@
             <th>Categoría</th>
             <th>Plan</th>
             <th>Monto</th>
-            <th>Hora</th>
+            <!--<th>Hora</th>-->
             <th>Método</th>
           </tr>
         </thead>
         <tbody>
+          @foreach($pagos as $pago)
+            <tr data-name="{{ $pago->nombre }}" data-category="{{ $pago->category }}" data-plan="{{ $pago->plan }}" data-amount="{{$pago->monto}}">
+              @php
+                $fecha = $pago->paydate;
+                $soloFecha = date('d-m-Y', strtotime($fecha));
+
+                $monto = $pago->monto;
+                $format_monto = number_format($monto, 0, ',', '.');
+              @endphp
+              <td>{{ $soloFecha }}</td>
+              <td>{{ $pago->nombre }}</td>
+              <td>{{ $pago->category }}</td>
+              <td>{{ $pago->plan }}</td>
+              <td>{{ $format_monto }}</td>
+              <td>{{ $pago->paymethod }}</td>
+            </tr>
+          @endforeach
+        </tbody>
+        <!--<tbody>
           <tr data-name="Carlos Gómez" data-category="Cliente" data-plan="Mensual" data-amount="80000">
             <td>2025-07-31</td>
             <td>Carlos Gómez</td>
@@ -114,58 +134,14 @@
             <td>12:45</td>
             <td>Transferencia</td>
           </tr>
-        </tbody>
+        </tbody>-->
       </table>
     </div>
   </div>
 </div>
 
 <!-- Modal dummy de creación -->
-<div class="modal fade" id="createPagoModal" tabindex="-1" aria-labelledby="createPagoLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content clients-card">
-      <div class="modal-header">
-        <h5 class="modal-title" id="createPagoLabel">Nuevo Pago</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group mb-3">
-          <label class="form-label">Fecha</label>
-          <input type="date" class="clients-input" value="2025-07-31">
-        </div>
-        <div class="form-group mb-3">
-          <label class="form-label">Nombre / Descripción</label>
-          <input type="text" class="clients-input" placeholder="Ej. Pago Cliente X">
-        </div>
-        <div class="form-group mb-3">
-          <label class="form-label">Categoría</label>
-          <select class="clients-filter">
-            <option>Cliente</option>
-            <option>Proteínas</option>
-            <option>Gastos</option>
-            <option>Servicios</option>
-          </select>
-        </div>
-        <div class="form-group mb-3">
-          <label class="form-label">Monto</label>
-          <input type="number" class="clients-input" placeholder="0">
-        </div>
-        <div class="form-group mb-3">
-          <label class="form-label">Método</label>
-          <select class="clients-filter">
-            <option>Efectivo</option>
-            <option>Tarjeta</option>
-            <option>Transferencia</option>
-          </select>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        <button class="btn-new-payment" data-bs-dismiss="modal">Guardar</button>
-      </div>
-    </div>
-  </div>
-</div>
+@include('finanzas.create')
 
 <script>
   const inputs = [

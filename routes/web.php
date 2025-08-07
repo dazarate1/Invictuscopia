@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\DatosController;
 use App\Http\Controllers\MetricsController;
+use App\Http\Controllers\PagosController;
 
 
 // Página de login
@@ -43,7 +44,7 @@ Route::get('/cliente/{id}', [ClienteController::class, 'GetClient'])
     ->name('cliente.obtener');
 
 // CRUD de clientes (form submissions)
-Route::post('/cliente',            [ClienteController::class, 'store'])   ->name('cliente.store');
+Route::post('/cliente',  [ClienteController::class, 'store'])   ->name('cliente.store');
 Route::put('/cliente/{id}',       [ClienteController::class, 'update'])  ->name('cliente.update');
 Route::delete('/cliente/{id}',    [ClienteController::class, 'destroy']) ->name('cliente.destroy');
 
@@ -56,10 +57,13 @@ Route::post('/storemetrics', [MetricsController::class, 'store']);
 Route::get('/cliente/{id}/metrics', [MetricsController::class, 'showHistory']);
 
 Route::get('/pagos', function () {
-    return view('finanzas.pagos');
+    $pagos = App\Models\Pagos::all();
+    return view('finanzas.pagos', compact('pagos'));
 })->name('pagos.index');
 
+Route::post('/pagos', [PagosController::class, 'store']) ->name('pago.store');
+
 // Vista de Finanzas
-Route::get('/pagos', function() {
+/*Route::get('/pagos', function() {
     return view('finanzas.pagos');
-})->name('pagos');
+})->name('pagos');*/
