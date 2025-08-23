@@ -30,7 +30,7 @@
 <div class="clients-container">
   <div class="clients-card">
     <header class="clients-header">
-      <h1 class="clients-title">Pagos del Día</h1>
+      <h1 class="clients-title">Historial de Transacciones</h1>
     </header>
 
     <div class="payments-actions">

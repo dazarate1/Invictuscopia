@@ -243,7 +243,7 @@
             <a href="{{ url('/home') }}" class="{{ request()->is('home') ? 'active' : '' }}">Home</a>
             <a href="{{ url('/cliente') }}" class="{{ request()->is('cliente') ? 'active' : '' }}">Lista de Clientes</a>
             <a href="{{ url('/datos') }}" class="{{ request()->is('datos') ? 'active' : '' }}">Datos</a>
-            <a href="{{ url('/pagos') }}" class="{{ request()->is('pagos') ? 'active':'' }}">Pagos del Día</a>
+            <a href="{{ url('/pagos') }}" class="{{ request()->is('pagos') ? 'active':'' }}">Historial de Transacciones</a>
             <div class="profile-section">
               <form method="POST" action="{{ url('/logout') }}">
                 @csrf

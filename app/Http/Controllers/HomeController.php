@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\cliente;
+use App\Models\Pagos;
 use Carbon\Carbon;
 
 class HomeController extends Controller
@@ -54,9 +55,12 @@ class HomeController extends Controller
 
         $clientesConPocasClases = Cliente::where('clases', '<=', 5)->get();
 
+        $pagosHoy = Pagos::whereDate('paydate', Carbon::today())->get();
+
         return view('home', [
             'cumpleaneros' => $cumpleaneros,
             'clientesConPocasClases' => $clientesConPocasClases,
+            'pagosHoy' => $pagosHoy
         ]);
     }
 

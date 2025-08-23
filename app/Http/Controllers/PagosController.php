@@ -23,6 +23,9 @@ class PagosController extends Controller
         $pago->nombre = $request->input('nombre');
         $pago->category = $request->input('category');
         $pago->plan = $request->input('plan');
+        if($pago->plan == null){
+            $pago->plan = "N/A";
+        }
         $pago->monto = $request->input('monto');
         $pago->paymethod = $request->input('paymethod');
 

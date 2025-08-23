@@ -145,12 +145,37 @@
               <table class="payments-table">
                 <thead>
                   <tr>
-                    <th>Fecha</th><th>Nombre</th><th>Categoría</th>
-                    <th>Plan</th><th>Monto</th><th>Hora</th><th>Método</th>
+                    <th>Fecha</th>
+                    <th>Nombre</th>
+                    <th>Categoría</th>
+                    <th>Plan</th>
+                    <th>Monto</th>
+                    <!--<th>Hora</th>-->
+                    <th>Método</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  @if($pagosHoy->isEmpty())
+                    <tr><strong>No hay pagos para el dia de hoy</strong></tr>
+                  @else
+                    @foreach($pagosHoy as $pagos)
+                     @php
+                      $fecha = $pagos->paydate;
+                      $soloFecha = date('d-m-Y', strtotime($fecha));
+                      $monto = $pagos->monto;
+                      $format_monto = number_format($monto, 0, ',', '.');
+                    @endphp
+                      <tr>
+                        <td>{{$soloFecha}}</td>
+                        <td>{{$pagos->nombre}}</td>
+                        <td>{{$pagos->category}}</td>
+                        <td>{{$pagos->plan}}</td>
+                        <td>{{$format_monto}}</td>
+                        <td>{{$pagos->paymethod}}</td>
+                      </tr>
+                    @endforeach
+                  @endif
+                  <!--<tr>
                     <td>2025-07-31</td><td>Carlos Gómez</td><td>Cliente</td>
                     <td>Mensual</td><td>$80.000</td><td>08:15</td><td>Efectivo</td>
                   </tr>
@@ -165,7 +190,7 @@
                   <tr>
                     <td>2025-07-31</td><td>Pago Servicios</td><td>Servicios</td>
                     <td>—</td><td>$120.000</td><td>12:45</td><td>Transferencia</td>
-                  </tr>
+                  </tr>-->
                 </tbody>
               </table>
             </div>
@@ -212,7 +237,7 @@
         </div>
 
         <!-- 3rd pair: Progreso Físico & Sugerencias -->
-        <div class="col-md-6">
+       <!-- <div class="col-md-6">
           <section class="module-section">
             <h3>📊 Progreso Físico Destacado</h3>
             <div class="info-box">
@@ -235,7 +260,7 @@
               </ul>
             </div>
           </section>
-        </div>
+        </div>--->
       </div>
     </div>
   @endif
