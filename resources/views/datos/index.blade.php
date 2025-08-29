@@ -109,30 +109,96 @@
         </div>
 
         <div class="row g-4">
+          <div class="col-md-5">
+            <div class="form-group">
+              <label for="nombre">Nombre</label>
+              <input type="text" id="nombre" class="clients-input" placeholder="Nombre" readonly />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="nacimiento">Fecha Nacimiento</label>
+              <input type="text" id="nacimiento" class="clients-input" placeholder="Fecha nacimiento" readonly />
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="genero">Genero</label>
+              <input type="text" id="genero" class="clients-input" placeholder="Genero" readonly />
+            </div>
+          </div>
+          <!-- Seccion 2-->
+          <div class="col-sm-4">
+            <div class="form-group">
+              <label for="cedula">Cedula</label>
+              <input type="text" id="cedula" class="clients-input" placeholder="Cedula" readonly />
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="form-group">
+              <label for="celular">Celular</label>
+              <input type="text" id="celular" class="clients-input" placeholder="Celular" readonly />
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="form-group">
+              <label for="eps">EPS</label>
+              <input type="text" id="eps" class="clients-input" placeholder="EPS" readonly />
+            </div>
+          </div>
+          <!-- seccion 3 -->
+          <div class="col-md-5">
+            <div class="form-group">
+              <label for="ocupacion">Ocupacion</label>
+              <input type="text" id="ocupacion" class="clients-input" placeholder="Ocupacion" readonly />
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="form-group">
+              <label for="correo">Correo</label>
+              <input type="email" id="correo" class="clients-input" placeholder="Correo" readonly />
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <label for="edad">Edad</label>
+              <input type="text" id="edad" class="clients-input" placeholder="Edad" readonly />
+            </div>
+          </div>
+          <!-- seccion 4-->
           <div class="col-md-6">
             <div class="form-group">
-              <label for="formNombre" class="form-label">Nombre</label>
-              <input type="text" id="formNombre" class="clients-input" placeholder="Nombre" readonly />
+              <label for="contact_emer">Contacto de Emergencia</label>
+              <input type="text" id="contact_emer" class="clients-input" placeholder="Contacto de emergencia" readonly />
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <label for="formCorreo" class="form-label">Correo</label>
-              <input type="email" id="formCorreo" class="clients-input" placeholder="Correo" readonly />
+              <label for="num_contact_emer">Numero</label>
+              <input type="text" id="num_contact_emer" class="clients-input" placeholder="Numero de contacto" readonly />
             </div>
           </div>
+
+          <!-- Seccion 5 -->
           <div class="col-md-6">
             <div class="form-group">
-              <label for="formTelefono" class="form-label">Teléfono</label>
-              <input type="text" id="formTelefono" class="clients-input" placeholder="Teléfono" readonly />
+              <label for="patologia">Patologia</label>
+              <input type="text" id="patologia" class="clients-input" placeholder="Patologia" readonly />
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-3">
             <div class="form-group">
-              <label for="formCedula" class="form-label">Cédula</label>
-              <input type="text" id="formCedula" class="clients-input" placeholder="Cédula" readonly />
+              <label for="estatura">Estatura</label>
+              <input type="text" id="estatura" class="clients-input" placeholder="Estatura" readonly />
             </div>
           </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="peso_inicial">Peso</label>
+              <input type="text" id="peso_inicial" class="clients-input" placeholder="Peso" readonly />
+            </div>
+          </div>
+
         </div>
       </form>
 
@@ -195,6 +261,7 @@ de modal para datos de valoracion
 
       const data = {
         client_id: document.getElementById('clienteIdSeleccionado').value,
+        fecha_valoracion: document.getElementById('fecha_valoracion').value,
         score_corporal: document.getElementById('score_corporal').value,
         peso: document.getElementById('peso').value,
         imc: document.getElementById('imc').value,
@@ -259,10 +326,27 @@ de modal para datos de valoracion
     document.getElementById('clienteSearch').value = cliente.nombre;
     document.getElementById('clienteResultados').innerHTML = '';
 
-    document.getElementById('formNombre').value = cliente.nombre;
-    document.getElementById('formCorreo').value = cliente.correo;
-    document.getElementById('formTelefono').value = cliente.telefono;
-    document.getElementById('formCedula').value = cliente.cedula;
+    document.getElementById('nombre').value = cliente.nombre;
+
+    const fechaStr = cliente.fecha_nacimiento; 
+    const fecha = new Date(fechaStr);
+    const opciones = { day: "2-digit", month: "2-digit", year: "numeric" };
+    const formato = fecha.toLocaleDateString("es-ES", opciones);
+    document.getElementById('nacimiento').value = formato;
+
+    document.getElementById('genero').value = cliente.genero;
+    document.getElementById('cedula').value = cliente.cedula;
+    document.getElementById('celular').value = cliente.celular;
+    document.getElementById('eps').value = cliente.eps;
+    document.getElementById('ocupacion').value = cliente.ocupacion;
+    document.getElementById('correo').value = cliente.correo;
+    document.getElementById('edad').value = cliente.edad;
+    document.getElementById('contact_emer').value = cliente.contact_emer;
+    document.getElementById('num_contact_emer').value = cliente.num_contact_emer;
+    document.getElementById('patologia').value = cliente.patologia;
+    document.getElementById('estatura').value = cliente.estatura;
+    document.getElementById('peso_inicial').value = cliente.peso;
+
     document.getElementById('btnAbrirModal').disabled = false;
 
     // Pasamos el ID al modal

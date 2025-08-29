@@ -11,6 +11,10 @@
           <!-- Campos de métricas -->
           <input type="hidden" id="clienteIdSeleccionado" name="cliente_id" />
           <div class="mb-2">
+            <label for= "fecha_valoracion" class="form-label">Fecha</label>
+            <input type="date" name="fecha_valoracion" id="fecha_valoracion" class="form-control" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" readonly>
+          </div>
+          <div class="mb-2">
             <label for="score_corporal" class="form-label">Puntaje Corporal</label>
             <input type="number" step="any" class="form-control" id="score_corporal" name="score_corporal" required />
           </div>

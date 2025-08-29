@@ -4,6 +4,8 @@
     <table class="table table-bordered">
         <thead>
             <tr>
+                <th>Fecha Valoracion</th>
+                <th>Fecha proxima valoracion</th>
                 <th>Puntaje Corporal</th>
                 <th>Peso (kg)</th>
                 <th>Indice Masa Corporal</th>
@@ -24,6 +26,8 @@
 
 @foreach($metricas as $metrica)
     <tr>
+        <td>{{$metrica->fecha_valoracion}}</td>
+        <td>{{$metrica->fecha_sig_valoracion}}</td>
         {{-- SCORE CORPORAL (flecha verde si sube, roja si baja) --}}
         <td>
             @php

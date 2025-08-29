@@ -41,9 +41,24 @@ class ClienteController extends Controller
     {
         $cliente = new Cliente;
         $cliente->nombre   = $request->input('nombre');
-        $cliente->telefono = $request->input('telefono');
-        $cliente->correo   = $request->input('correo');
+        $cliente->fecha_nacimiento   = $request->input('nacimiento');
         $cliente->cedula   = $request->input('cedula');
+        $cliente->celular = $request->input('celular');
+        $cliente->eps   = $request->input('eps');
+        $cliente->ocupacion   = $request->input('ocupacion');
+        $cliente->correo   = $request->input('correo');
+        $cliente->edad   = $request->input('edad');
+        $cliente->rh   = $request->input('rh');
+        $cliente->contact_emer   = $request->input('contact_emer');
+        $cliente->num_contact_emer   = $request->input('num_contact_emer');
+        $cliente->patologia   = $request->input('patologia');
+        if($cliente->patologia == null){
+            $cliente->patologia = "N/A";
+        }
+        $cliente->genero   = $request->input('genero');
+        $cliente->estatura   = $request->input('estatura');
+        $cliente->peso   = $request->input('peso');
+        $cliente->fecha_ingreso   = $request->input('ingreso');
         $cliente->plan     = '16 clases';
         $cliente->clases   = '16';
         $cliente->save();
@@ -58,8 +73,24 @@ class ClienteController extends Controller
     {
         $cliente = Cliente::findOrFail($id);
         $cliente->nombre   = $request->input('nombre');
-        $cliente->telefono = $request->input('telefono');
+        $cliente->fecha_nacimiento   = $request->input('nacimiento');
+        $cliente->cedula   = $request->input('cedula');
+        $cliente->celular = $request->input('celular');
+        $cliente->eps   = $request->input('eps');
+        $cliente->ocupacion   = $request->input('ocupacion');
         $cliente->correo   = $request->input('correo');
+        $cliente->edad   = $request->input('edad');
+        $cliente->rh   = $request->input('rh');
+        $cliente->contact_emer   = $request->input('contact_emer');
+        $cliente->num_contact_emer   = $request->input('num_contact_emer');
+        $cliente->patologia   = $request->input('patologia');
+        if($cliente->patologia == null){
+            $cliente->patologia = "N/A";
+        }
+        $cliente->genero   = $request->input('genero');
+        $cliente->estatura   = $request->input('estatura');
+        $cliente->peso   = $request->input('peso');
+        $cliente->fecha_ingreso   = $request->input('ingreso');
         $cliente->save();
 
         return redirect()->back();

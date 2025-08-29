@@ -32,11 +32,10 @@
         <div class="search-filter-group">
           <input type="text" id="inputBusqueda" class="clients-search" placeholder="Buscar clientes">
           <select id="selectColumna" class="clients-filter">
-            <option value="0">ID</option>
-            <option value="1">Nombre</option>
-            <option value="2">Teléfono</option>
-            <option value="3">Correo</option>
-            <option value="4">Cédula</option>
+            <option value="0">Nombre</option>
+            <option value="1">Cedula</option>
+            <option value="2">Plan</option>
+            <option value="3">Clases</option>
           </select>
         </div>
       </div>
@@ -46,23 +45,26 @@
         <table class="clients-table" id="tabla-clientes">
           <thead>
             <tr>
-              <th>ID</th>
               <th>Nombre</th>
-              <th>Teléfono</th>
-              <th>Correo</th>
               <th>Cédula</th>
+              <th>Plan</th>
               <th>Clases</th>
               <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
             @foreach ($clientes as $cliente)
+            @php
+              if (($cliente->clases < 5) && ($cliente->clases > 3) ) {
+                # coloca color amarillo en la fila o como te parezca bonito mano
+              }elseif($cliente->clases <= 3){
+                # coloca color rojo en la fila o como te parezca bonito mano
+              } 
+            @endphp
               <tr>
-                <td>{{ $cliente->id }}</td>
                 <td>{{ $cliente->nombre }}</td>
-                <td>{{ $cliente->telefono }}</td>
-                <td>{{ $cliente->correo }}</td>
                 <td>{{ $cliente->cedula }}</td>
+                <td>{{ $cliente->plan }}</td>
                 <td>{{ $cliente->clases }}</td>
                 <td class="actions-cell">
                   <button type="button" class="btn-edit" data-bs-toggle="modal" data-bs-target="#edit{{ $cliente->id }}">

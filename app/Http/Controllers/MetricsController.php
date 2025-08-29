@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\metrics;
 
@@ -11,6 +12,10 @@ class MetricsController extends Controller
     {
         try {$metrics = new Metrics;
         $metrics->client_id                 = $request->input('client_id');
+        $metrics->fecha_valoracion          = $request->input('fecha_valoracion');
+
+        $fecha_origial = $request->input('fecha_valoracion');
+        $metrics->fecha_sig_valoracion      = Carbon::parse($fecha_origial)->addMonths(2);
         $metrics->score_corporal            = $request->input('score_corporal');
         $metrics->peso                      = $request->input('peso');
         $metrics->imc                       = $request->input('imc');
