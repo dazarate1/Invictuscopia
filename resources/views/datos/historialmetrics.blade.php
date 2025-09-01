@@ -1,6 +1,7 @@
 @if($metricas->isEmpty())
     <p>No hay métricas registradas para este cliente.</p>
 @else
+<div id="historialMetricas" class="mt-4">
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -237,4 +238,5 @@
 @endforeach
         </tbody>
     </table>
+</div>
 @endif
