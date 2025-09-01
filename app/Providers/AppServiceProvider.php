@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,8 @@ class AppServiceProvider extends ServiceProvider
         Route::middleware('api')
         ->prefix('api')
         ->group(base_path('routes/api.php'));
+
+        Paginator::useBootstrapFive();
     }
 }
 

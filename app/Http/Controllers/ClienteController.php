@@ -10,10 +10,23 @@ class ClienteController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $clientes = Cliente::all();
-        return view('cliente.index', compact('clientes'));
+        /*$clientes = Cliente::all();
+        return view('cliente.index', compact('clientes'));*/
+
+            $search = $request->input('search');
+    $column = $request->input('column');
+
+    $clientes = \App\Models\Cliente::query();
+
+    if ($search && $column !== null) {
+        $clientes->where($column, 'like', '%' . $search . '%');
+    }
+
+    $clientes = $clientes->paginate(10)->withQueryString();
+
+    return view('cliente.index', compact('clientes', 'search', 'column'));
     }
 
     /**
@@ -59,8 +72,10 @@ class ClienteController extends Controller
         $cliente->estatura   = $request->input('estatura');
         $cliente->peso   = $request->input('peso');
         $cliente->fecha_ingreso   = $request->input('ingreso');
-        $cliente->plan     = '16 clases';
-        $cliente->clases   = '16';
+        /*$cliente->plan     = '16 clases';
+        $cliente->clases   = '16';*/
+        $cliente->plan   = $request->input('plan');
+        $cliente->clases   = $request->input('clases');
         $cliente->save();
 
         return redirect()->back();

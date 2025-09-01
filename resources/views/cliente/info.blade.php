@@ -62,9 +62,8 @@
           <div class="form-group">
             <label for="genero">Genero</label>
             <select id="genero" name="genero" class="clients-filter">
-              <option></option>
-              <option>Femenino</option>
-              <option>Masculino</option>
+              <option value="Femenino" {{$cliente->genero === "Femenino" ? 'selected' : ''}}>Femenino</option>
+              <option value="Masculino" {{$cliente->genero === "Masculino" ? 'selected' : ''}}>Masculino</option>
             </select>
           </div>
           <div class="form-group">
@@ -74,6 +73,21 @@
           <div class="form-group">
             <label for="peso">Peso</label>
             <input type="text" name="peso" id="peso" class="clients-input" placeholder="Ingrese el peso" required value=" {{$cliente->peso}}">
+          </div>
+          <div class="form-group">
+            <label for="plan">Plan</label>
+            <!--<input type="text" name="plan" id="plan" class="clients-input" required value="{{$cliente->plan}}">-->
+            <select id="plan" name="plan" class="clients-filter">
+              <option value="" {{ empty($cliente->plan) ? 'selected' : '' }}></option>
+              <option value="Mensual" {{ $cliente->plan === 'Mensual' ? 'selected' : '' }}>Mensual</option>
+              <option value="Pareja" {{ $cliente->plan === 'Pareja' ? 'selected' : '' }}>Pareja</option>
+              <option value="Semi 12" {{ $cliente->plan === 'Semi 12' ? 'selected' : '' }}>Semi 12</option>
+              <option value="Semi 16" {{ $cliente->plan === 'Semi 16' ? 'selected' : '' }}>Semi 16</option>
+          </select>
+          </div>
+          <div class="form-group">
+            <label for="clases">Clases</label>
+            <input type="text" name="clases" id="clases" class="clients-input" placeholder="Ingrese cantidad de clases" required value=" {{$cliente->clases}}">
           </div>
         </div>
         <div class="modal-footer">

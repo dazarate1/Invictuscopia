@@ -29,7 +29,7 @@
         <button type="button" class="btn-new" data-bs-toggle="modal" data-bs-target="#create">
           + Nuevo Cliente
         </button>
-        <div class="search-filter-group">
+        <!--<div class="search-filter-group">
           <input type="text" id="inputBusqueda" class="clients-search" placeholder="Buscar clientes">
           <select id="selectColumna" class="clients-filter">
             <option value="0">Nombre</option>
@@ -37,7 +37,21 @@
             <option value="2">Plan</option>
             <option value="3">Clases</option>
           </select>
-        </div>
+        </div>-->
+        <form method="GET" action="{{ route('clientes.index') }}">
+          <div>
+            <input type="text" name="search" class="clients-search" placeholder="Buscar..." value="{{ request('search') }}">
+            
+            <select name="column" class="clients-filter">
+              <option value="nombre" {{ request('column') == 'nombre' ? 'selected' : '' }}>Nombre</option>
+              <option value="cedula" {{ request('column') == 'cedula' ? 'selected' : '' }}>Cédula</option>
+              <option value="plan" {{ request('column') == 'plan' ? 'selected' : '' }}>Plan</option>
+              <option value="clases" {{ request('column') == 'clases' ? 'selected' : '' }}>Clases</option>
+            </select>
+            
+            <button type="submit" class="btn-new" >Buscar</button>
+          </div>
+        </form>
       </div>
 
       <!-- Tabla de clientes con espacio y bordes modernos -->
@@ -79,6 +93,13 @@
             @endforeach
           </tbody>
         </table>
+        
+
+<!-- Links de paginación -->
+<div class="mt-3">
+  {{ $clientes->links() }}
+</div>
+
       </div>
 
       <!-- Modal de creación incluido -->

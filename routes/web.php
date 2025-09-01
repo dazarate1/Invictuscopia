@@ -31,10 +31,12 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])
     return view('cliente.index', compact('clientes'));
 })->name('cliente.index');*/
 
-Route::get('/cliente', function () {
+/*Route::get('/cliente', function () {
     $clientes = App\Models\Cliente::all();
     return view('cliente.index', compact('clientes'));
-})->name('cliente.index');
+})->name('cliente.index');*/ 
+
+Route::get('/cliente', [ClienteController::class, 'index'])->name('clientes.index');
 
 // Ruta para JS (API JSON)
 Route::get('/api/cliente', [ClienteController::class, 'ListClients']);
