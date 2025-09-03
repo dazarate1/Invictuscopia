@@ -234,6 +234,10 @@
       }
     }
   });
+
+  window.addEventListener("beforeunload", function () {
+    navigator.sendBeacon("/logout");
+});
 </script>
 @endif
 <body>

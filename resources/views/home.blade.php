@@ -214,7 +214,14 @@
                       if($cum->lessThan($hoy)) $cum->addYear();
                       $dias = $hoy->diffInDays($cum);
                       $edad = $nac->age + 1;
-                      $texto = $dias===0?'hoy':($dias===1?'mañana':"en {$dias} días");
+                      /*if ($dias == '0' ) {
+                        $texto = 'hoy';
+                      }elseif ($dias == '1' ) {
+                        $texto = 'mañana';
+                      } else {
+                        $texto = "en {$dias} dias";
+                      }*/
+                      $texto = $dias == '0' ? 'hoy':($dias == '1' ? 'mañana':"en {$dias} días");
                     @endphp
                     <li><strong>{{ $cliente->nombre }}</strong> – {{ $texto }} (cumple {{ $edad }})</li>
                   @endforeach
