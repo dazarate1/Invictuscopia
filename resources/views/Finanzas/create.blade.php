@@ -26,6 +26,14 @@
             <option>Servicios</option>
           </select>
         </div>
+
+        <div class="form-group" id="buscarCliente" style="display: none">
+          <label for="clienteSearch" class="form-label">Buscar Cliente</label>
+          <input type="text" id="clienteSearch" class="clients-filter" placeholder="Escriba nombre del cliente..." oninput="filtrarClientes()" autocomplete="off" />
+          <ul id="clienteResultados" class="autocomplete-results"></ul>
+          <input type="hidden" name="cliente_id" id="clienteIdSeleccionado">
+        </div>
+
         <div class="form-group mb-3" id="clientplan" style="display: none">
           <label for= "plan" class="form-label">Plan</label>
           <select id="plan" name="plan" class="clients-filter">
@@ -59,20 +67,34 @@
 </div>
 <script>
 
+  let listaClientes = [];
+  let clienteSeleccionado = null;
+
   document.addEventListener('DOMContentLoaded', function () {
     
     //Hide-show campo de planes para clientes
     const categoriaSelect = document.getElementById('category');
     const clienteField = document.getElementById('clientplan');
+    const buscarCliente = document.getElementById('buscarCliente');
 
     categoriaSelect.addEventListener('change', function () {
       if (this.value === 'Cliente') {
         clienteField.style.display = 'block';
+        buscarCliente.style.display = 'block';
       } else {
         clienteField.style.display = 'none';
+        buscarCliente.style.display = 'block';
       }
     });
+
+    fetch('/api/cliente') // cambia si usas otra ruta
+      .then(r => r.json())
+      .then(clientes => {
+        listaClientes = clientes;
+      });
+
   }
+  
 
 
   /*const payDateInput = document.getElementById('paydate');  
@@ -83,7 +105,36 @@
   const currentDate = `${yyyy}-${mm}-${dd}`;
   payDateInput.value = currentDate;*/
 
-);
+  );
+
+  function filtrarClientes() {
+    const entrada = document.getElementById('clienteSearch').value.toLowerCase();
+    const resultados = document.getElementById('clienteResultados');
+    resultados.innerHTML = '';
+
+    if (entrada.length === 0) return;
+
+    const filtrados = listaClientes.filter(c =>
+      c.nombre.toLowerCase().includes(entrada)
+    );
+
+    filtrados.forEach(c => {
+      const li = document.createElement('li');
+      li.textContent = c.nombre;
+      li.classList.add('list-group-item');
+      li.onclick = () => seleccionarCliente(c);
+      resultados.appendChild(li);
+    });
+  }
+
+  function seleccionarCliente(cliente) {
+    clienteSeleccionado = cliente;
+    document.getElementById('clienteSearch').value = cliente.nombre;
+    document.getElementById('clienteResultados').innerHTML = '';
+
+    // Pasamos el ID al modal
+    document.getElementById('clienteIdSeleccionado').value = cliente.id;
+  }
 
 
 </script>

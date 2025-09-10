@@ -63,6 +63,8 @@
               <th>Cédula</th>
               <th>Plan</th>
               <th>Clases</th>
+              <th>Vigencia</th>
+              <th>Estado</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -80,6 +82,18 @@
                 <td>{{ $cliente->cedula }}</td>
                 <td>{{ $cliente->plan }}</td>
                 <td>{{ $cliente->clases }}</td>
+                @php
+                $fecha = $cliente->vigencia_plan;
+                $soloFecha = date('d-m-Y', strtotime($fecha));
+                
+                if ($cliente->estatus == '1') {
+                  $estatus_cliente = "Activo";
+                }else{
+                  $estatus_cliente = "Inactivo";
+                }
+                @endphp
+                <td>{{ $soloFecha }}</td>
+                <td>{{$estatus_cliente}}</td>
                 <td class="actions-cell">
                   <button type="button" class="btn-edit" data-bs-toggle="modal" data-bs-target="#edit{{ $cliente->id }}">
                     Editar

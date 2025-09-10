@@ -105,7 +105,10 @@ class ClienteController extends Controller
         $cliente->genero   = $request->input('genero');
         $cliente->estatura   = $request->input('estatura');
         $cliente->peso   = $request->input('peso');
-        $cliente->fecha_ingreso   = $request->input('ingreso');
+        //$cliente->fecha_ingreso   = $request->input('ingreso');
+        $cliente->estatus = $request->has('estatus') ? 1 : 0;
+        $cliente->plan   = $request->input('plan');
+        $cliente->clases   = $request->input('clases');
         $cliente->save();
 
         return redirect()->back();
