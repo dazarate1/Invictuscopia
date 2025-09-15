@@ -9,7 +9,7 @@
       width: -webkit-fill-available;
     }
     .clients-card {
-      max-width: 80%;
+      max-width: 90%;
       margin: 0 auto;
       box-shadow: 0 4px 15px rgba(249, 115, 22, 0.6);
       background: #ffffff;
