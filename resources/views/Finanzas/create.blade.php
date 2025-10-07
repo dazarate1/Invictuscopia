@@ -54,6 +54,9 @@
             <option>Efectivo</option>
             <option>Tarjeta</option>
             <option>Transferencia</option>
+            <option>Nequi</option>
+            <option>Daviplata</option>
+            <option>Banco de Bogota</option>
           </select>
         </div>
       </div>
@@ -83,7 +86,7 @@
         buscarCliente.style.display = 'block';
       } else {
         clienteField.style.display = 'none';
-        buscarCliente.style.display = 'block';
+        buscarCliente.style.display = 'none';
       }
     });
 

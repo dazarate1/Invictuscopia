@@ -134,7 +134,7 @@
               <option value="Pareja" {{ $cliente->plan === 'Pareja' ? 'selected' : '' }}>Pareja</option>
               <option value="Semi 12" {{ $cliente->plan === 'Semi 12' ? 'selected' : '' }}>Semi 12</option>
               <option value="Semi 16" {{ $cliente->plan === 'Semi 16' ? 'selected' : '' }}>Semi 16</option>
-          </select>
+            </select>
           </div>
           <div class="form-group">
             <label for="clases">Clases</label>

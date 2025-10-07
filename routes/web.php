@@ -66,7 +66,10 @@ Route::get('/pagos', function () {
 })->name('pagos.index');
 
 Route::post('/pagos', [PagosController::class, 'store']) ->name('pago.store');
-
+Route::put('/pagos/{id}',       [PagosController::class, 'update'])  ->name('pago.update');
+Route::delete('/pagos/{id}',    [PagosController::class, 'destroy']) ->name('pago.destroy');
+Route::get('/pagos/{id}', [ClienteController::class, 'GetPay'])
+    ->name('pago.obtener');
 // Vista de Finanzas
 /*Route::get('/pagos', function() {
     return view('finanzas.pagos');

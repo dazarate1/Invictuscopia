@@ -70,12 +70,16 @@
         <thead>
           <tr>
             <th>Fecha</th>
-            <th>Nombre</th>
+            <th>Descripcion</th>
             <th>Categoría</th>
             <th>Plan</th>
+            <th>Ingresos</th>
+            <th>Egresos</th>
             <th>Monto</th>
             <!--<th>Hora</th>-->
             <th>Método</th>
+            <!-- <th>Descripción</th>-->
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -92,9 +96,29 @@
               <td>{{ $pago->nombre }}</td>
               <td>{{ $pago->category }}</td>
               <td>{{ $pago->plan }}</td>
-              <td>{{ $format_monto }}</td>
+              <td>
+                @if(($pago->category === "Cliente") || ($pago->category === "Proteínas") )
+                  {{ $format_monto }}
+                @endif 
+              </td>
+              <td>
+                @if(($pago->category === "Gastos") || ($pago->category === "Servicios") )
+                  {{ $format_monto }}
+                @endif
+              </td>
+              <!--<td>{{ $format_monto }}</td>-->
               <td>{{ $pago->paymethod }}</td>
+              <!-- <td{{ $pago->description }}</td> -->
+              <td class="actions-cell">
+                  <button type="button" class="btn-edit" data-bs-toggle="modal" data-bs-target="#editpago{{ $pago->id }}">
+                    Editar
+                  </button>
+                  <button type="button" class="btn-delete" data-bs-toggle="modal" data-bs-target="#deletepago{{ $pago->id }}">
+                    Eliminar
+                  </button>
+                </td>
             </tr>
+            @include('finanzas.info')
           @endforeach
         </tbody>
         <!--<tbody>
