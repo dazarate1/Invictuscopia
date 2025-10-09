@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Cliente;
 
 class Pagos extends Model
 {
@@ -17,6 +18,11 @@ class Pagos extends Model
     protected $casts = [
         'paydate' => 'date',
     ];
+
+     public function cliente()
+    {
+        return $this->belongsTo(Cliente::class, 'cliente_id');
+    }
 
 
 }

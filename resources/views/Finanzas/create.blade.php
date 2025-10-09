@@ -86,7 +86,7 @@
         buscarCliente.style.display = 'block';
       } else {
         clienteField.style.display = 'none';
-        buscarCliente.style.display = 'none';
+        buscarCliente.style.display = 'block';
       }
     });
 

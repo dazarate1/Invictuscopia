@@ -13,6 +13,7 @@ class PagosController extends Controller
      */
     public function index()
     {
+        $pagos = Pago::with('cliente')->get(); // 👈 esto carga el cliente junto al pago
         $pagos = Pagos::all();
         return view('finanzas.pagos', compact('pagos'));
     }
@@ -65,7 +66,7 @@ class PagosController extends Controller
     public function update(Request $request, $id)
     {
         $pago = Pagos::findOrFail($id);
-        //$pago->paydate = $request->input('paydate');
+        $pago->paydate = $request->input('paydate');
         $pago->nombre = $request->input('nombre');
         $pago->category = $request->input('category');
         $pago->plan = $request->input('plan');
@@ -86,6 +87,7 @@ class PagosController extends Controller
         } 
 
         if ($pago->category === "Cliente") {
+            $pago->cliente_id = $request->input('cliente_id');
             $fechapago = Carbon::parse($request->input('paydate'));
             $vigencia_plan = $fechapago->addDays(30);
             \DB::table('clientes')->where('id', $request->input('cliente_id'))->update([
@@ -106,5 +108,6 @@ class PagosController extends Controller
 
         return redirect()->back();
     }
+
 
 }
