@@ -13,6 +13,7 @@ class Metrics extends Model
     public $timestamps = false; // 👈 Desactiva created_at y updated_at
 
     protected $fillable = [
+        'id',
         'client_id',
         'score_corporal',
         'peso',

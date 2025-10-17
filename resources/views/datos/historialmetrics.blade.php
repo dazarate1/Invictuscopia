@@ -229,7 +229,13 @@
 
         {{-- MASA ÓSEA (sin flechas por ahora) --}}
         <td>{{ $metrica->masa_osea }}</td>
+        <td class="actions-cell">
+            <button type="button" class="btn-edit" data-bs-toggle="modal" data-bs-target="#editmetrica{{ $metrica->id }}">
+                Editar
+            </button>
+        </td>
     </tr>
+
 
     {{-- Actualiza el valor anterior --}}
     @php
@@ -239,4 +245,7 @@
         </tbody>
     </table>
 </div>
+@foreach($metricas as $metrica)
+    @include('datos.edit')
+@endforeach
 @endif
