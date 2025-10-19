@@ -84,6 +84,8 @@
               <option>Pareja</option>
               <option>Semi 12</option>
               <option>Semi 16</option>
+              <option>Pro 12</option>
+              <option>Pro 16</option>
             </select>
           </div>
           <div class="form-group">

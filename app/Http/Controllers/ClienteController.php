@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Cliente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class ClienteController extends Controller
 {
@@ -74,8 +77,9 @@ class ClienteController extends Controller
         $cliente->fecha_ingreso   = $request->input('ingreso');
         /*$cliente->plan     = '16 clases';
         $cliente->clases   = '16';*/
-        $cliente->plan   = $request->input('plan');
-        $cliente->clases   = $request->input('clases');
+        $cliente->plan   = $request->filled('plan') ? $request->input('plan') : 'N/A';
+        $cliente->clases = $request->filled('clases') ? $request->input('clases') : 'N/A';
+        $cliente->estatus = 1;
         $cliente->save();
 
         return redirect()->back();
@@ -107,8 +111,9 @@ class ClienteController extends Controller
         $cliente->peso   = $request->input('peso');
         //$cliente->fecha_ingreso   = $request->input('ingreso');
         $cliente->estatus = $request->has('estatus') ? 1 : 0;
-        $cliente->plan   = $request->input('plan');
-        $cliente->clases   = $request->input('clases');
+        $cliente->plan   = $request->filled('plan') ? $request->input('plan') : 'N/A';
+        $cliente->clases = $request->filled('clases') ? $request->input('clases') : 'N/A';
+        $cliente->estatus = 1;
         $cliente->save();
 
         return redirect()->back();
@@ -139,4 +144,29 @@ class ClienteController extends Controller
         $client->save();
         return response()->json(['message' => 'Valor actualizado', 'new_value' => $client->clases]);
     }
+
+            public function clientesPorVencer()
+        {
+            $clientes = DB::table('crudclientes.clientes')
+                ->select('nombre', 'vigencia_plan')
+                ->get()
+                ->filter(function ($cliente) {
+                    $hoy = \Carbon\Carbon::now();
+                    $vigencia = \Carbon\Carbon::parse($cliente->vigencia_plan);
+
+                    $dias = $hoy->diffInDays($vigencia, false);
+
+                    return $dias >= 0 && $dias <= 5;
+                })
+                ->map(function ($cliente) {
+                    $vigencia = \Carbon\Carbon::parse($cliente->vigencia_plan);
+                    $hoy = \Carbon\Carbon::now();
+                    $cliente->faltan_dias = $hoy->diffInDays($vigencia, false);
+                    return $cliente;
+                })
+                ->values();
+
+            return response()->json($clientes);
+        }
+
 }

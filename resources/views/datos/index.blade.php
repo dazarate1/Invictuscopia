@@ -79,6 +79,8 @@
   </style>
 
   <!-- Toast para notificaciones -->
+   {{-- Debug temporal --}}
+<p>Debug ID: {{ $metrica->id ?? 'NO DEFINIDO' }}</p>
 <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1055">
   <div id="toastSuccess" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="d-flex">

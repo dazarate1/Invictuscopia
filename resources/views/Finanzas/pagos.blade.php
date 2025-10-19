@@ -53,6 +53,8 @@
         <option value="Pareja">Pareja</option>
         <option value="Semi 12">Semi 12</option>
         <option value="Semi 16">Semi 16</option>
+        <option value="Pro 12">Semi 12</option>
+        <option value="Pro 16">Semi 16</option>
       </select>
       <select id="filterAmount" class="clients-filter">
         <option value="">Todos los Montos</option>

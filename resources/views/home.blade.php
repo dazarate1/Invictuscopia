@@ -107,37 +107,65 @@
 
   @if(request()->is('home'))
     <div class="container">
-      <div class="row gy-4">
-        <!-- 1st pair: Resumen & Pagos -->
-        <div class="col-md-6">
-          <section class="module-section">
-            <h3>🧾 Resumen del Día</h3>
-            <div class="info-box">
-              <div class="chart-container">
-                <canvas id="resumenChart"></canvas>
-              </div>
-            </div>
-          </section>
-          <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script>
-          const ctx = document.getElementById('resumenChart').getContext('2d');
-          new Chart(ctx, {
-            type: 'pie',
-            data: {
-              labels: ['Asistencias', 'Nuevos registros', 'Promedio'],
-              datasets: [{
-                data: [12, 3, 10],
-                backgroundColor: ['#ff9f40', '#ffc107', '#ff7f50'],
-              }]
-            },
-            options: {
-              plugins: {
-                legend: { position: 'bottom', labels: { color: '#1f2937' } }
-              }
-            }
-          });
-        </script>
-        </div>
+    <div class="row mb-4">
+  <div class="col-md-6">
+    <section class="module-section">
+    <h3>📅 Planes por vencer en 5 días</h3>
+    <div class="info-box">
+      <ul class="list-unstyled mb-0" id="clientesPorVencer">
+        <li>Cargando...</li>
+      </ul>
+    </div>
+  </section>
+</div> 
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    fetch('/home/clientes-por-vencer', {
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json'
+      }
+    })
+    .then(res => res.json())
+    .then(data => {
+  const list = document.getElementById('clientesPorVencer');
+  list.innerHTML = '';
+
+  if (data.length === 0) {
+    list.innerHTML = '<li><strong>No hay usuarios próximos a vencer.</strong></li>';
+    return;
+  }
+
+  data.forEach(cliente => {
+    if (!cliente.vigencia_plan) return;
+
+    const fecha = new Date(cliente.vigencia_plan);
+    if (isNaN(fecha.getTime())) return; // Fecha inválida
+
+    const fechaFormateada = fecha.toLocaleDateString('es-CO');
+    const dias = parseInt(cliente.faltan_dias);
+
+    let color = '';
+    if (dias <= 2) {
+      color = 'red';
+    } else if (dias <= 5) {
+      color = 'orange';
+    }
+
+    list.innerHTML += `
+      <li style="color: ${color}">
+        <strong>${cliente.nombre}</strong> – vence en ${dias} día${dias > 1 ? 's' : ''} (${fechaFormateada})
+      </li>
+    `;
+  });
+})
+    .catch(err => {
+      document.getElementById('clientesPorVencer').innerHTML = '<li><strong>Error al cargar datos.</strong></li>';
+    });
+  });
+</script>
+
         <div class="col-md-6">
           <section class="module-section">
             <h3>💰 Pagos del Día</h3>
@@ -196,10 +224,12 @@
             </div>
           </section>
         </div>
+      </div>
 
         <!-- 2nd pair: Cumpleaños & Clientes Inactivos -->
-        <div class="col-md-6">
-          <section class="module-section">
+        <div class="row mb-4">
+  <div class="col-md-6">
+     <section class="module-section">
             <h3>🎂 Próximos Cumpleaños</h3>
             <div class="info-box">
               <ul class="list-unstyled mb-0">
@@ -231,43 +261,51 @@
           </section>
         </div>
         <div class="col-md-6">
-          <section class="module-section">
-            <h3>📉 Clientes Inactivos</h3>
-            <div class="info-box">
-              <ul class="list-unstyled mb-0">
-                <li>Laura Gómez – inactiva 15 días</li>
-                <li>Pedro Martínez – inactivo 20 días</li>
-                <li>Sofía Díaz – inactiva 30 días</li>
-              </ul>
-            </div>
-          </section>
+  <section class="module-section">
+    <h3>🩺 Clientes próximos a valoración</h3>
+    <div class="info-box">
+      <ul class="list-unstyled mb-0" id="clientesPorValorar">
+        <li>Cargando...</li>
+      </ul>
+    </div>
+  </section>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    fetch('/home/clientes-por-valorar', {
+      credentials: 'same-origin',
+      headers: { 'Accept': 'application/json' }
+    })
+    .then(res => res.json())
+    .then(data => {
+      const list = document.getElementById('clientesPorValorar');
+      list.innerHTML = '';
+
+      if (data.length === 0) {
+        list.innerHTML = '<li><strong>No hay clientes próximos a valoración.</strong></li>';
+        return;
+      }
+
+      data.forEach(cliente => {
+        const dias = cliente.faltan_dias;
+        const color = dias <= 2 ? 'red' : (dias <= 5 ? 'orange' : 'black');
+
+        list.innerHTML += `
+          <li style="color:${color}">
+            <strong>${cliente.nombre}</strong> – valoración en ${dias} día${dias > 1 ? 's' : ''} (${cliente.fecha_valoracion})
+          </li>
+        `;
+      });
+    })
+    .catch(() => {
+      document.getElementById('clientesPorValorar').innerHTML = '<li><strong>Error al cargar datos.</strong></li>';
+    });
+  });
+</script>
         </div>
 
-        <!-- 3rd pair: Progreso Físico & Sugerencias -->
-       <!-- <div class="col-md-6">
-          <section class="module-section">
-            <h3>📊 Progreso Físico Destacado</h3>
-            <div class="info-box">
-              <ul class="list-unstyled mb-0">
-                <li>Andrés Ramírez – bajó <strong>5kg</strong> este mes</li>
-                <li>Valeria Torres – cerca de peso ideal</li>
-                <li>Jorge Molina – +2kg de músculo</li>
-              </ul>
-            </div>
-          </section>
-        </div>
-        <div class="col-md-6">
-          <section class="module-section">
-            <h3>💬 Sugerencias de Seguimiento</h3>
-            <div class="info-box">
-              <ul class="list-unstyled mb-0">
-                <li>Ana Pérez – solo 2/16 días asistidos</li>
-                <li>Luis Fernández – 3/16 días asistidos</li>
-                <li>Camila Rojas – 1/16 días asistidos</li>
-              </ul>
-            </div>
-          </section>
-        </div>--->
+        
       </div>
     </div>
   @endif

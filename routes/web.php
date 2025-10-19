@@ -5,6 +5,7 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\DatosController;
 use App\Http\Controllers\MetricsController;
 use App\Http\Controllers\PagosController;
+use App\Http\Controllers\HomeController;
 
 
 // Página de login
@@ -17,6 +18,7 @@ Route::middleware(['auth'])->group(function(){
 Route::get('/cliente', function () {$clientes = App\Models\Cliente::all();return view('cliente.index', compact('clientes'));})->name('cliente.index');
 Route::get('/cliente/{id}', [App\Http\Controllers\ClienteController::class, 'GetClient'])->name('cliente.obtener');
 Route::get('/datos', [App\Http\Controllers\DatosController::class, 'index'])->name('datos.index');
+Route::get('/clientes-por-vencer', [ClienteController::class, 'clientesPorVencer']);
 Route::resource('cliente', ClienteController::class);*/
 // Dashboard
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])
@@ -55,8 +57,8 @@ Route::delete('/cliente/{id}',    [ClienteController::class, 'destroy']) ->name(
 // Vista de Datos del Cliente
 Route::get('/datos', [DatosController::class, 'index'])
     ->name('datos.index');
+Route::put('/datos/{id}', [DatosController::class, 'update'])->name('metrics.update');
 
-Route::put('/datos/{id}', [MetricsController::class, 'update']) ->name('metrics.update'); 
 
 //Routa de almacenamiento de metricas
 Route::post('/storemetrics', [MetricsController::class, 'store']);
@@ -72,6 +74,11 @@ Route::put('/pagos/{id}',       [PagosController::class, 'update'])  ->name('pag
 Route::delete('/pagos/{id}',    [PagosController::class, 'destroy']) ->name('pago.destroy');
 Route::get('/pagos/{id}', [ClienteController::class, 'GetPay'])
     ->name('pago.obtener');
+
+Route::get('/home/clientes-por-vencer', [HomeController::class, 'clientesPorVencer']);
+Route::get('/home/clientes-por-valorar', [HomeController::class, 'clientesPorValorar']);
+
+
 // Vista de Finanzas
 /*Route::get('/pagos', function() {
     return view('finanzas.pagos');
