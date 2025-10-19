@@ -123,6 +123,15 @@
             @include('finanzas.info')
           @endforeach
         </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="4" class="text-end fw-bold"> Totales Ingresos y Egresos:</td>
+            <td id="total-ingresos" class="fw-bold text-success">$0</td>
+            <td id="total-egresos" class="fw-bold text-danger">$0</td>
+            <td></td> <!-- Aquí va el monto total original -->
+            <td colspan="2"></td> <!-- Para método y botones -->
+          </tr>
+        </tfoot>
         <!--<tbody>
           <tr data-name="Carlos Gómez" data-category="Cliente" data-plan="Mensual" data-amount="80000">
             <td>2025-07-31</td>
@@ -201,6 +210,46 @@
         row.style.display = show ? '' : 'none';
       });
   }
+  function filterPayments() {
+  const name = document.getElementById('searchName').value.toLowerCase();
+  const cat  = document.getElementById('filterCategory').value;
+  const plan = document.getElementById('filterPlan').value;
+  const amt  = document.getElementById('filterAmount').value;
+
+  let totalIngresos = 0;
+  let totalEgresos = 0;
+
+  document.querySelectorAll('#pagos-table tbody tr').forEach(row => {
+    let show = true;
+    if(name && !row.dataset.name.toLowerCase().includes(name)) show = false;
+    if(cat  && row.dataset.category      !== cat)  show = false;
+    if(plan && row.dataset.plan          !== plan) show = false;
+    if(amt) {
+      const v = +row.dataset.amount;
+      if(amt==='1' && v >= 50000)        show = false;
+      if(amt==='2' && (v<50000||v>100000)) show = false;
+      if(amt==='3' && v <= 100000)       show = false;
+    }
+
+    row.style.display = show ? '' : 'none';
+
+    if(show) {
+      const categoria = row.cells[2].textContent.trim();
+      const montoTexto = row.dataset.amount.replace(/\./g, '');
+      const monto = parseInt(montoTexto) || 0;
+
+      if(categoria === 'Cliente' || categoria === 'Proteínas') {
+        totalIngresos += monto;
+      } else if(categoria === 'Gastos' || categoria === 'Servicios') {
+        totalEgresos += monto;
+      }
+    }
+  });
+
+  document.getElementById('total-ingresos').textContent = '$' + totalIngresos.toLocaleString('es-CO');
+  document.getElementById('total-egresos').textContent = '$' + totalEgresos.toLocaleString('es-CO');
+}
+document.addEventListener('DOMContentLoaded', filterPayments);
 </script>
 
 @endsection
