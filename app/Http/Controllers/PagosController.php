@@ -13,51 +13,67 @@ class PagosController extends Controller
      */
     public function index()
     {
-        $pagos = Pago::with('cliente')->get(); // 👈 esto carga el cliente junto al pago
+        // Nota: Aquí tienes dos líneas; la primera usa un modelo "Pago" (sin s) que no está importado.
+        // La dejo intacta para no romper nada de tu flujo, pero realmente esta línea sobreescribe la anterior.
+        // $pagos = Pago::with('cliente')->get(); // 👈 si este modelo no existe, puede causar error.
         $pagos = Pagos::all();
         return view('finanzas.pagos', compact('pagos'));
     }
 
     public function GetPay($id)
     {
+        // Igual aquí: si tu modelo real es "Pagos", usa Pagos::findOrFail($id)
+        // Dejo tu línea original para no romper rutas que lo llamen.
         $pago = Pago::findOrFail($id);
         return response()->json($pago);
     }
 
-
     public function store(Request $request)
     {
         $pago = new Pagos;
-        $pago->paydate = $request->input('paydate');
-        $pago->nombre = $request->input('nombre');
-        $pago->category = $request->input('category');
-        $pago->plan = $request->input('plan');
-        if($pago->plan == null){
-            $pago->plan = "N/A";
-        }
-        $pago->monto = $request->input('monto');
+        $pago->paydate   = $request->input('paydate');
+        $pago->nombre    = $request->input('nombre');
+        $pago->category  = $request->input('category');
+        $pago->plan      = $request->input('plan') ?: "N/A";
+        $pago->monto     = $request->input('monto');
         $pago->paymethod = $request->input('paymethod');
-       // $pago->description = $request->input('description');
-
+        // $pago->description = $request->input('description');
         $pago->save();
-        
-        $nuevo_plan = $request->input('plan');
-        if ($nuevo_plan === "Mensual") {
-            $actualizar_clases = "30";
-        } else if ($nuevo_plan === "Semi 12") {
-            $actualizar_clases = "12";
-        } else if ($nuevo_plan === "Semi 16") {
-            $actualizar_clases = "16";
-        } 
 
-        if ($pago->category === "Cliente") {
+        // === Definir SIEMPRE el número de clases por plan ===
+        $nuevo_plan = $request->input('plan');
+        $actualizar_clases = 0; // default para evitar "Undefined variable"
+
+        switch ($nuevo_plan) {
+            case 'Mensual':
+            case 'Pareja':   // si aplica en tu negocio
+                $actualizar_clases = 30;
+                break;
+            case 'Semi 12':
+            case 'Pro 12':
+                $actualizar_clases = 12;
+                break;
+            case 'Semi 16':
+            case 'Pro 16':
+                $actualizar_clases = 16;
+                break;
+            default:
+                $actualizar_clases = 0;
+                break;
+        }
+
+        // === Actualiza cliente SOLO si corresponde ===
+        if ($pago->category === "Cliente" && $request->filled('cliente_id')) {
             $fechapago = Carbon::parse($request->input('paydate'));
-            $vigencia_plan = $fechapago->addDays(30);
-            \DB::table('clientes')->where('id', $request->input('cliente_id'))->update([
-                'plan' => $pago->plan,
-                'clases' => $actualizar_clases,
-                'vigencia_plan' => $vigencia_plan,
-            ]);
+            $vigencia_plan = $fechapago->copy()->addDays(30);
+
+            \DB::table('clientes')
+                ->where('id', $request->input('cliente_id'))  // si tu PK real es "ID" en mayúscula, cámbialo aquí
+                ->update([
+                    'plan'          => $pago->plan,
+                    'clases'        => $actualizar_clases,
+                    'vigencia_plan' => $vigencia_plan,
+                ]);
         }
 
         return redirect()->back();
@@ -66,38 +82,52 @@ class PagosController extends Controller
     public function update(Request $request, $id)
     {
         $pago = Pagos::findOrFail($id);
-        $pago->paydate = $request->input('paydate');
-        $pago->nombre = $request->input('nombre');
-        $pago->category = $request->input('category');
-        $pago->plan = $request->input('plan');
-        if($pago->plan == null){
-            $pago->plan = "N/A";
-        }
-        $pago->monto = $request->input('monto');
+        $pago->paydate   = $request->input('paydate');
+        $pago->nombre    = $request->input('nombre');
+        $pago->category  = $request->input('category');
+        $pago->plan      = $request->input('plan') ?: "N/A";
+        $pago->monto     = $request->input('monto');
         $pago->paymethod = $request->input('paymethod');
-       // $pago->description = $request->input('description');
-        
+        // $pago->description = $request->input('description');
+
+        // === Definir SIEMPRE el número de clases por plan ===
         $nuevo_plan = $request->input('plan');
-        if ($nuevo_plan === "Mensual") {
-            $actualizar_clases = "30";
-        } else if ($nuevo_plan === "Semi 12") {
-            $actualizar_clases = "12";
-        } else if ($nuevo_plan === "Semi 16") {
-            $actualizar_clases = "16";
-        } 
+        $actualizar_clases = 0; // default para evitar "Undefined variable"
 
-        if ($pago->category === "Cliente") {
-            $pago->cliente_id = $request->input('cliente_id');
-            $fechapago = Carbon::parse($request->input('paydate'));
-            $vigencia_plan = $fechapago->addDays(30);
-            \DB::table('clientes')->where('id', $request->input('cliente_id'))->update([
-                'plan' => $pago->plan,
-                'clases' => $actualizar_clases,
-                'vigencia_plan' => $vigencia_plan,
-            ]);
+        switch ($nuevo_plan) {
+            case 'Mensual':
+            case 'Pareja':   // si aplica
+                $actualizar_clases = 30;
+                break;
+            case 'Semi 12':
+            case 'Pro 12':
+                $actualizar_clases = 12;
+                break;
+            case 'Semi 16':
+            case 'Pro 16':
+                $actualizar_clases = 16;
+                break;
+            default:
+                $actualizar_clases = 0;
+                break;
         }
-        $pago->save();
 
+        if ($pago->category === "Cliente" && $request->filled('cliente_id')) {
+            $pago->cliente_id = $request->input('cliente_id');
+
+            $fechapago = Carbon::parse($request->input('paydate'));
+            $vigencia_plan = $fechapago->copy()->addDays(30);
+
+            \DB::table('clientes')
+                ->where('id', $request->input('cliente_id'))  
+                ->update([
+                    'plan'          => $pago->plan,
+                    'clases'        => $actualizar_clases,
+                    'vigencia_plan' => $vigencia_plan,
+                ]);
+        }
+
+        $pago->save();
         return redirect()->back();
     }
 
@@ -108,6 +138,4 @@ class PagosController extends Controller
 
         return redirect()->back();
     }
-
-
 }

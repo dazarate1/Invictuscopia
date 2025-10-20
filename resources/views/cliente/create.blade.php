@@ -76,22 +76,7 @@
             <label for="ingreso">Fecha de ingreso</label>
             <input type="date" name="ingreso" id="ingreso" class="clients-input" required>
           </div>
-          <div class="form-group">
-            <label for= "plan" class="form-label">Plan</label>
-            <select id="plan" name="plan" class="clients-filter">
-              <option></option>
-              <option>Mensual</option>
-              <option>Pareja</option>
-              <option>Semi 12</option>
-              <option>Semi 16</option>
-              <option>Pro 12</option>
-              <option>Pro 16</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="clases">Cantidad de clases</label>
-            <input type="text" name="clases" id="clases" class="clients-input" required>
-          </div>
+          
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
