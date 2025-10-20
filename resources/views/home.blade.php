@@ -262,46 +262,71 @@
         </div>
         <div class="col-md-6">
   <section class="module-section">
-    <h3>🩺 Clientes próximos a valoración</h3>
-    <div class="info-box">
-      <ul class="list-unstyled mb-0" id="clientesPorValorar">
-        <li>Cargando...</li>
-      </ul>
-    </div>
-  </section>
-</div>
+  <h3>📝 Próximos a valoración (≤5 días)</h3>
+  <div class="info-box">
+    <ul class="list-unstyled mb-0" id="proxValoracionList">
+      <li>Cargando...</li>
+    </ul>
+  </div>
+</section>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    fetch('/home/clientes-por-valorar', {
+document.addEventListener('DOMContentLoaded', async () => {
+  const list = document.getElementById('proxValoracionList');
+  const URL_PROX = "{{ url('home/proximos-valoracion') }}"; // 🔒 absoluta
+
+  try {
+    const res = await fetch(URL_PROX, {
       credentials: 'same-origin',
       headers: { 'Accept': 'application/json' }
-    })
-    .then(res => res.json())
-    .then(data => {
-      const list = document.getElementById('clientesPorValorar');
-      list.innerHTML = '';
-
-      if (data.length === 0) {
-        list.innerHTML = '<li><strong>No hay clientes próximos a valoración.</strong></li>';
-        return;
-      }
-
-      data.forEach(cliente => {
-        const dias = cliente.faltan_dias;
-        const color = dias <= 2 ? 'red' : (dias <= 5 ? 'orange' : 'black');
-
-        list.innerHTML += `
-          <li style="color:${color}">
-            <strong>${cliente.nombre}</strong> – valoración en ${dias} día${dias > 1 ? 's' : ''} (${cliente.fecha_valoracion})
-          </li>
-        `;
-      });
-    })
-    .catch(() => {
-      document.getElementById('clientesPorValorar').innerHTML = '<li><strong>Error al cargar datos.</strong></li>';
     });
-  });
+
+    // Lee cuerpo SIEMPRE (para poder loguearlo si hay error/HTML)
+    const raw = await res.text();
+    const ct = res.headers.get('content-type') || '';
+
+    if (!res.ok) {
+      console.error('HTTP error:', res.status, raw.slice(0, 500));
+      throw new Error(`HTTP ${res.status}`);
+    }
+
+    if (!ct.includes('application/json')) {
+      console.error('Respuesta NO JSON. Content-Type:', ct, 'Body:', raw.slice(0, 500));
+      throw new Error('Respuesta no es JSON (¿redirect a login, 419 CSRF, 500, rutas?)');
+    }
+
+    const data = JSON.parse(raw);
+    console.log('Prox valoración data:', data);
+
+    list.innerHTML = '';
+    if (!Array.isArray(data) || data.length === 0) {
+      list.innerHTML = '<li><strong>No hay clientes próximos a valoración.</strong></li>';
+      return;
+    }
+
+    data.forEach(cli => {
+      if (!cli.fecha_sig_valoracion) return;
+      const fecha = new Date(cli.fecha_sig_valoracion);
+      if (isNaN(fecha.getTime())) return;
+
+      const dias = parseInt(cli.faltan_dias, 10);
+      const fechaCol = fecha.toLocaleDateString('es-CO');
+
+      let color = '';
+      if (dias <= 2) color = 'red';
+      else if (dias <= 5) color = 'orange';
+
+      list.insertAdjacentHTML('beforeend', `
+        <li style="color:${color}">
+          <strong>${cli.nombre}</strong> – valoración en ${dias} día${dias>1?'s':''} (${fechaCol})
+        </li>
+      `);
+    });
+  } catch (e) {
+    console.error('Fallo cargando prox valoración:', e);
+    list.innerHTML = '<li><strong>Error al cargar datos (ver consola/Network).</strong></li>';
+  }
+});
 </script>
         </div>
 

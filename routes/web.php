@@ -75,7 +75,10 @@ Route::get('/pagos/{id}', [ClienteController::class, 'GetPay'])
     ->name('pago.obtener');
 
 Route::get('/home/clientes-por-vencer', [HomeController::class, 'clientesPorVencer']);
-Route::get('/home/clientes-por-valorar', [HomeController::class, 'clientesPorValorar']);
+Route::middleware('auth')->group(function () {
+    Route::get('/home/proximos-valoracion', [HomeController::class, 'proximosValoracion'])
+        ->name('home.proximos-valoracion');
+});
 
 
 // Vista de Finanzas

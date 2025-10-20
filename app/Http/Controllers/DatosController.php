@@ -28,36 +28,49 @@ class DatosController extends Controller
 
     // (ejemplo del update que ya venimos usando)
     public function update(Request $request, $id)
-    {
-        $validatedData = $request->validate([
-            'fecha_valoracion'     => 'nullable|date',
-            'fecha_sig_valoracion' => 'nullable|date',
-            'client_id'            => 'nullable|integer',
-            'score_corporal'       => 'nullable|numeric',
-            'peso'                 => 'nullable|numeric',
-            'imc'                  => 'nullable|numeric',
-            'grasa_corporal'       => 'nullable|numeric',
-            'lvl_agua'             => 'nullable|numeric',
-            'grasa_visc'           => 'nullable|numeric',
-            'musculo'              => 'nullable|numeric',
-            'proteina'             => 'nullable|numeric',
-            'metabolismo'          => 'nullable|numeric',
-            'masa_osea'            => 'nullable|numeric',
-        ]);
+{
+    $validated = $request->validate([
+        'client_id'           => 'required|integer',
+        'fecha_valoracion'    => 'required|date',
+        'peso'                => 'required|numeric',
+        'imc'                 => 'required|numeric',
+        'grasa_corporal'      => 'required|numeric',
+        'lvl_agua'            => 'required|numeric',
+        'grasa_visc'          => 'required|numeric',
+        'musculo'             => 'required|numeric',
+        'proteina'            => 'required|numeric',
+        'metabolismo'         => 'required|numeric',
+        'masa_osea'           => 'required|numeric',
+    ]);
 
-        if (!empty($validatedData['fecha_valoracion'])) {
-            $validatedData['fecha_valoracion'] = Carbon::parse($validatedData['fecha_valoracion'])->format('Y-m-d');
-        }
-        if (!empty($validatedData['fecha_sig_valoracion'])) {
-            $validatedData['fecha_sig_valoracion'] = Carbon::parse($validatedData['fecha_sig_valoracion'])->format('Y-m-d');
-        }
+    // Normaliza fecha_valoracion (YYYY-MM-DD)
+    $fechaVal = Carbon::parse($validated['fecha_valoracion'])->startOfDay();
+    // Próxima valoración = misma fecha + 2 meses (sin desbordes)
+    $fechaSig = $fechaVal->copy()->addMonthsNoOverflow(2);
 
-        $updated = DB::table('metricsclients')
-            ->where('ID', $id)  // usa 'ID' si tu PK está en mayúscula
-            ->update($validatedData);
+    $payload = [
+        'client_id'            => $validated['client_id'],
+        'fecha_valoracion'     => $fechaVal->toDateString(),
+        'fecha_sig_valoracion' => $fechaSig->toDateString(),
+        'peso'                 => $validated['peso'],
+        'imc'                  => $validated['imc'],
+        'grasa_corporal'       => $validated['grasa_corporal'],
+        'lvl_agua'             => $validated['lvl_agua'],
+        'grasa_visc'           => $validated['grasa_visc'],
+        'musculo'              => $validated['musculo'],
+        'proteina'             => $validated['proteina'],
+        'metabolismo'          => $validated['metabolismo'],
+        'masa_osea'            => $validated['masa_osea'],
+    ];
 
-        return back()->with($updated ? 'success' : 'error',
-            $updated ? 'Métrica actualizada correctamente.' : 'No se pudo actualizar o no hubo cambios.'
-        );
-    }
+    // OJO: tu PK es "ID" (mayúscula)
+    $updated = DB::table('metricsclients')
+        ->where('ID', $id)
+        ->update($payload);
+
+    return back()->with(
+        $updated ? 'success' : 'error',
+        $updated ? 'Métrica actualizada correctamente.' : 'No se realizaron cambios.'
+    );
+}
 }
