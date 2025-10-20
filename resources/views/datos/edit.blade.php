@@ -6,7 +6,7 @@
             <h5 class="modal-title" id="editLabel{{ $metrica->id }}">Editar Valoracion</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
-            <form action="{{ route('metrics.update', $metrica->id) }}" method="POST" enctype="multipart/form-data" class="form-edit-metric">
+            <form action="{{ route('datos.update', $metrica->ID) }}" method="POST" enctype="multipart/form-data" class="form-edit-metric">
                 @csrf
                 @method('PUT')
                 <div class="modal-body">

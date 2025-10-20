@@ -55,9 +55,8 @@ Route::put('/cliente/{id}',       [ClienteController::class, 'update'])  ->name(
 Route::delete('/cliente/{id}',    [ClienteController::class, 'destroy']) ->name('cliente.destroy');
 
 // Vista de Datos del Cliente
-Route::get('/datos', [DatosController::class, 'index'])
-    ->name('datos.index');
-Route::put('/datos/{id}', [DatosController::class, 'update'])->name('metrics.update');
+Route::get('/datos', [DatosController::class, 'index'])->name('datos.index');
+Route::put('/datos/{id}', [DatosController::class, 'update'])->name('datos.update');
 
 
 //Routa de almacenamiento de metricas
