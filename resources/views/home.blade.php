@@ -106,9 +106,9 @@
   </div>
 
   @if(request()->is('home'))
-    <div class="container">
+  <div class="container">
     <div class="row mb-4">
-  <div class="col-md-6">
+      <div class="col-md-6">
     <section class="module-section">
     <h3>📅 Planes por vencer en 5 días</h3>
     <div class="info-box">
@@ -159,7 +159,7 @@
       </li>
     `;
   });
-})
+  })
     .catch(err => {
       document.getElementById('clientesPorVencer').innerHTML = '<li><strong>Error al cargar datos.</strong></li>';
     });
@@ -304,6 +304,27 @@
   });
 </script>
         </div>
+
+
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <section class="module-section">
+      <h3>📅 Clientes con menos de 3 clases disponibles</h3>
+        <div class="info-box">
+          <ul class="list-unstyled mb-0" id="clientesPorVencer">
+            @if($clientesConPocasClases ->isEmpty())
+              <li><strong>No hay clientes con menos de 3 clases disponibles</strong></li>
+            @else
+              @foreach($clientesConPocasClases as $pocasclases)
+                <li>A <strong>{{ $pocasclases->nombre }}</strong> - le quedan <strong>{{ $pocasclases->clases }}</strong> clases</li>
+              @endforeach
+            @endif
+          </ul>
+        </div>
+      </section>
+  </div> 
+
+  </div>
 
         
       </div>

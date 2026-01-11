@@ -53,7 +53,7 @@ class HomeController extends Controller
             return $hoy->diffInDays($cumpleEsteAnio);
          });
 
-        $clientesConPocasClases = Cliente::where('clases', '<=', 5)->get();
+        $clientesConPocasClases = Cliente::where('clases', '<=', 3)->get();
 
         $pagosHoy = Pagos::whereDate('paydate', Carbon::today())->get();
 
