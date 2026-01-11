@@ -85,41 +85,35 @@ class HomeController extends Controller
         return response()->json($clientes);
     }
 
-        public function clientesPorValorar()
+        public function proximosValoracion()
     {
-        $hoy = Carbon::now();
-        $limite = $hoy->copy()->addDays(5);
+        $hoy    = Carbon::today();              // 00:00 de hoy
+        $limite = Carbon::today()->addDays(5);  // +5 días
 
-        $resultados = DB::table('metricsclients')
-            ->join('clientes', 'metricsclients.client_id', '=', 'clientes.id')
-            ->select('clientes.nombre', 'metricsclients.fecha_sig_valoracion')
-            ->whereDate('metricsclients.fecha_sig_valoracion', '>=', $hoy->toDateString())
-            ->whereDate('metricsclients.fecha_sig_valoracion', '<=', $limite->toDateString())
+        // Si usas esquema, cámbialo a 'crudclientes.clientes as c'
+        $rows = DB::table('metricsclients as m')
+            ->join('clientes as c', 'c.ID', '=', 'm.client_id')   // PK en mayúscula
+            ->whereBetween('m.fecha_sig_valoracion', [
+                $hoy->toDateString(),
+                $limite->toDateString()
+            ])
+            ->orderBy('m.fecha_sig_valoracion')
+            ->select([
+                'c.nombre',
+                'm.fecha_sig_valoracion',
+            ])
             ->get();
 
-        $clientes = DB::table('metricsclients')
-    ->join('clientes', 'metricsclients.client_id', '=', 'clientes.id')
-    ->select('clientes.nombre', 'metricsclients.fecha_sig_valoracion')
-    ->whereNotNull('metricsclients.fecha_sig_valoracion')
-    ->get()
-    ->filter(function ($cliente) {
-        $fechaHoy = Carbon::today();
-        $fechaValoracion = Carbon::parse($cliente->fecha_sig_valoracion);
-        $diasFaltantes = $fechaHoy->diffInDays($fechaValoracion, false);
-        return $diasFaltantes >= 0 && $diasFaltantes <= 5;
-    })
-    ->map(function ($cliente) {
-        $fechaValoracion = Carbon::parse($cliente->fecha_sig_valoracion);
-        $dias = Carbon::today()->diffInDays($fechaValoracion, false);
+        $data = $rows->map(function ($r) use ($hoy) {
+            $fecha = Carbon::parse($r->fecha_sig_valoracion);
+            return [
+                'nombre'               => $r->nombre,
+                'fecha_sig_valoracion' => $fecha->toDateString(),
+                'faltan_dias'          => max(0, $hoy->diffInDays($fecha)), // nunca negativo
+            ];
+        });
 
-        return (object) [
-            'nombre' => $cliente->nombre,
-            'fecha_valoracion' => $fechaValoracion->format('Y-m-d'),
-            'faltan_dias' => $dias,
-        ];
-    });
-
-        return response()->json($clientes);
+        return response()->json($data, 200, [], JSON_UNESCAPED_UNICODE);
     }
 
 }

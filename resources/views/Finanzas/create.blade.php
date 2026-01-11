@@ -34,7 +34,7 @@
           <input type="hidden" name="cliente_id" id="clienteIdSeleccionado">
         </div>
 
-        <div class="form-group mb-3" id="clientplan" style="display: none">
+       <div class="form-group mb-3" id="clientplan" style="display: none">
           <label for= "plan" class="form-label">Plan</label>
           <select id="plan" name="plan" class="clients-filter">
             <option></option>

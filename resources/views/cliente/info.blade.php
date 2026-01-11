@@ -71,6 +71,10 @@
             <input type="date" name="nacimiento" id="nacimiento" class="clients-input" required value="{{ \Carbon\Carbon::parse($cliente->fecha_nacimiento)->format('Y-m-d') }}">
           </div>
           <div class="form-group">
+            <label for="vigencia_plan">Vigencia del plan</label>
+            <input type="date" name="vigencia_plan" id="vigencia_plan" class="clients-input" required value="{{ \Carbon\Carbon::parse($cliente->vigencia_plan)->format('Y-m-d') }}">
+          </div>
+          <div class="form-group">
             <label for="cedula">Cédula</label>
             <input type="text" name="cedula" id="cedula" class="clients-input" placeholder="Ingrese cédula" required value=" {{$cliente->cedula}}">
           </div>

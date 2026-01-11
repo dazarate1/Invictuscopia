@@ -230,9 +230,12 @@
         {{-- MASA ÓSEA (sin flechas por ahora) --}}
         <td>{{ $metrica->masa_osea }}</td>
         <td class="actions-cell">
-            <button type="button" class="btn-edit" data-bs-toggle="modal" data-bs-target="#editmetrica{{ $metrica->id }}">
-                Editar
-            </button>
+            <button type="button"
+        class="btn-edit"
+        data-bs-toggle="modal"
+        data-bs-target="#editmetrica{{ $metrica->ID }}">
+  Editar
+</button>
         </td>
     </tr>
 

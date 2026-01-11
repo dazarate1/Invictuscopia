@@ -55,9 +55,8 @@ Route::put('/cliente/{id}',       [ClienteController::class, 'update'])  ->name(
 Route::delete('/cliente/{id}',    [ClienteController::class, 'destroy']) ->name('cliente.destroy');
 
 // Vista de Datos del Cliente
-Route::get('/datos', [DatosController::class, 'index'])
-    ->name('datos.index');
-Route::put('/datos/{id}', [DatosController::class, 'update'])->name('metrics.update');
+Route::get('/datos', [DatosController::class, 'index'])->name('datos.index');
+Route::put('/datos/{id}', [DatosController::class, 'update'])->name('datos.update');
 
 
 //Routa de almacenamiento de metricas
@@ -76,7 +75,10 @@ Route::get('/pagos/{id}', [ClienteController::class, 'GetPay'])
     ->name('pago.obtener');
 
 Route::get('/home/clientes-por-vencer', [HomeController::class, 'clientesPorVencer']);
-Route::get('/home/clientes-por-valorar', [HomeController::class, 'clientesPorValorar']);
+Route::middleware('auth')->group(function () {
+    Route::get('/home/proximos-valoracion', [HomeController::class, 'proximosValoracion'])
+        ->name('home.proximos-valoracion');
+});
 
 
 // Vista de Finanzas
