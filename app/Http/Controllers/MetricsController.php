@@ -71,4 +71,12 @@ class MetricsController extends Controller
 
     }
 
+    public function destroy($id)
+    {
+        $metrics = Metrics::findOrFail($id);
+        $metrics->delete();
+
+        return redirect()->back();
+    }
+
 }

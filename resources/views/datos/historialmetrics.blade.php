@@ -17,6 +17,7 @@
                 <th>Proteínas (%)</th>
                 <th>Metabolismo Basal (kcal)</th>
                 <th>Masa ósea (kg)</th>
+                <th>Acciones</th>
                 <!-- Agrega más columnas si lo necesitas -->
             </tr>
         </thead>
@@ -230,13 +231,14 @@
         {{-- MASA ÓSEA (sin flechas por ahora) --}}
         <td>{{ $metrica->masa_osea }}</td>
         <td class="actions-cell">
-            <button type="button"
-        class="btn-edit"
-        data-bs-toggle="modal"
-        data-bs-target="#editmetrica{{ $metrica->ID }}">
-  Editar
-</button>
+          <button type="button" class="btn-edit" data-bs-toggle="modal" data-bs-target="#editmetrica{{ $metrica->id }}">
+            Editar
+          </button>
+          <button type="button" class="btn-delete" data-bs-toggle="modal" data-bs-target="#delete{{ $metrica->id }}">
+            Eliminar
+          </button>
         </td>
+
     </tr>
 
 

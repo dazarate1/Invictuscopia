@@ -62,6 +62,7 @@ Route::put('/datos/{id}', [DatosController::class, 'update'])->name('datos.updat
 //Routa de almacenamiento de metricas
 Route::post('/storemetrics', [MetricsController::class, 'store']);
 Route::get('/cliente/{id}/metrics', [MetricsController::class, 'showHistory']);
+Route::delete('/metrica/{id}',    [MetricsController::class, 'destroy']) ->name('metrics.destroy');
 
 Route::get('/pagos', function () {
     $pagos = App\Models\Pagos::all();
