@@ -18,19 +18,34 @@ class ClienteController extends Controller
         /*$clientes = Cliente::all();
         return view('cliente.index', compact('clientes'));*/
 
-            $search = $request->input('search');
-    $column = $request->input('column');
+        $search = $request->input('search');
+        $column = $request->input('column');
+        $status = $request->input('status', 1);
 
-    $clientes = \App\Models\Cliente::query();
+        $clientes = \App\Models\Cliente::query();
 
-    if ($search && $column !== null) {
-        $clientes->where($column, 'like', '%' . $search . '%');
-    }
-    $clientes->orderBy('nombre','asc');
+        /*if ($search && $column !== null) {
+            $clientes->where($column, 'like', '%' . $search . '%');
+        }*/
 
-    $clientes = $clientes->paginate(10)->withQueryString();
+        /* Filtro por estado SIEMPRE */
+        if ($request->has('status')) {
+            $clientes->where('estatus', $request->status);
+        }
 
-    return view('cliente.index', compact('clientes', 'search', 'column'));
+        /* Filtro de búsqueda SOLO si hay texto */
+        if ($request->filled('search')) {
+            $clientes->where(
+                $request->column ?? 'nombre',
+                'like',
+                '%' . $request->search . '%'
+            );
+        }
+        $clientes->orderBy('nombre','asc');
+
+        $clientes = $clientes->paginate(10)->withQueryString();
+
+        return view('cliente.index', compact('clientes', 'search', 'column', 'status'));
     }
 
     /**

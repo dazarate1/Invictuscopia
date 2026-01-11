@@ -40,6 +40,12 @@
         </div>-->
         <form method="GET" action="{{ route('clientes.index') }}">
           <div>
+            <select id="statusFilter" name="status" class="clients-filter" onchange="this.form.submit()">
+              <option value="1" {{ ($status ?? 1) == 1 ? 'selected' : '' }}>Activos</option>
+              <option value="0" {{ ($status ?? 1) == 0 ? 'selected' : '' }}>Inactivos</option>
+            </select>
+
+            
             <input type="text" name="search" class="clients-search" placeholder="Buscar..." value="{{ request('search') }}">
             
             <select name="column" class="clients-filter">
@@ -124,18 +130,11 @@
   @include('cliente.accessnot')
 
   <script>
-    document.getElementById('inputBusqueda').addEventListener('keyup', buscarEnTabla);
 
-    function buscarEnTabla() {
-      var textoBusqueda = document.getElementById('inputBusqueda').value.toLowerCase();
-      var columnaSeleccionada = document.getElementById('selectColumna').value;
-      var tabla = document.getElementById('tabla-clientes');
-      var filas = tabla.getElementsByTagName('tr');
-      for (var i = 1; i < filas.length; i++) {
-        var celdas = filas[i].getElementsByTagName('td');
-        var textoCelda = celdas[columnaSeleccionada].innerText.toLowerCase();
-        filas[i].style.display = textoCelda.indexOf(textoBusqueda) > -1 ? '' : 'none';
-      }
-    }
+
+    document.getElementById('statusFilter').addEventListener('change', function () {
+      this.closest('form').submit();
+    });
+
   </script>
 @endsection
