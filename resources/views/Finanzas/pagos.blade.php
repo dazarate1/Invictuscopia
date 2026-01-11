@@ -194,6 +194,7 @@
 <!-- Modal dummy de creación -->
 @include('finanzas.create')
 
+<!-- script de filtro por mes y sumatoria de montos segun los mostrado por pantalla -->
 <script>
   document.getElementById('monthFilter').addEventListener('change', function () {
       const selectedMonth = this.value;

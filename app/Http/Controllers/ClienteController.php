@@ -26,6 +26,7 @@ class ClienteController extends Controller
     if ($search && $column !== null) {
         $clientes->where($column, 'like', '%' . $search . '%');
     }
+    $clientes->orderBy('nombre','asc');
 
     $clientes = $clientes->paginate(10)->withQueryString();
 
