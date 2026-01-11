@@ -34,7 +34,7 @@
     </header>
 
     <div class="payments-actions">
-      <input
+    <!--  <input
         type="text"
         id="searchName"
         class="clients-search"
@@ -61,7 +61,23 @@
         <option value="1">Menos de 50 000</option>
         <option value="2">50 000 – 100 000</option>
         <option value="3">Más de 100 000</option>
+      </select>-->
+      <select id="monthFilter" class="clients-filter">
+        <option value="">-- Selecciona un mes --</option>
+        <option value="1">Enero</option>
+        <option value="2">Febrero</option>
+        <option value="3">Marzo</option>
+        <option value="4">Abril</option>
+        <option value="5">Mayo</option>
+        <option value="6">Junio</option>
+        <option value="7">Julio</option>
+        <option value="8">Agosto</option>
+        <option value="9">Septiembre</option>
+        <option value="10">Octubre</option>
+        <option value="11">Noviembre</option>
+        <option value="12">Diciembre</option>
       </select>
+
       <button class="btn-new-payment" data-bs-toggle="modal" data-bs-target="#createPagoModal">
         + Nuevo Pago
       </button>
@@ -94,7 +110,7 @@
                 $monto = $pago->monto;
                 $format_monto = number_format($monto, 0, ',', '.');
               @endphp
-              <td>{{ $soloFecha }}</td>
+              <td class="date">{{ $soloFecha }}</td>
               <td>{{ $pago->nombre }}</td>
               <td>{{ $pago->category }}</td>
               <td>{{ $pago->plan }}</td>
@@ -179,6 +195,73 @@
 @include('finanzas.create')
 
 <script>
+  document.getElementById('monthFilter').addEventListener('change', function () {
+      const selectedMonth = this.value;
+      const rows = document.querySelectorAll('#pagos-table tbody tr');
+
+      rows.forEach(row => {
+          const dateText = row.querySelector('.date').innerText.trim();
+          const parts = dateText.split('-'); // [d, m, y]
+
+          const rowMonth = parseInt(parts[1], 10);
+
+          if (selectedMonth === "" || rowMonth == selectedMonth) {
+              row.style.display = '';
+          } else {
+              row.style.display = 'none';
+          }
+      });
+  });
+
+  function filterPaymentsByMonth() {
+  const selectedMonth = document.getElementById('monthFilter').value;
+
+  let totalIngresos = 0;
+  let totalEgresos = 0;
+
+  document.querySelectorAll('#pagos-table tbody tr').forEach(row => {
+    let show = true;
+
+    // Obtener fecha d-m-y
+    const dateText = row.querySelector('.date').textContent.trim();
+    const parts = dateText.split('-'); // [d, m, y]
+    const rowMonth = parseInt(parts[1], 10);
+
+    if (selectedMonth && rowMonth !== parseInt(selectedMonth, 10)) {
+      show = false;
+    }
+
+    row.style.display = show ? '' : 'none';
+
+    // Sumatorio solo de filas visibles
+    if (show) {
+      const categoria = row.cells[2].textContent.trim();
+      const montoTexto = row.dataset.amount.replace(/\./g, '');
+      const monto = parseInt(montoTexto, 10) || 0;
+
+      if (categoria === 'Cliente' || categoria === 'Proteínas') {
+        totalIngresos += monto;
+      } else if (categoria === 'Gastos' || categoria === 'Servicios') {
+        totalEgresos += monto;
+      }
+    }
+  });
+
+  document.getElementById('total-ingresos').textContent =
+    '$' + totalIngresos.toLocaleString('es-CO');
+
+  document.getElementById('total-egresos').textContent =
+    '$' + totalEgresos.toLocaleString('es-CO');
+}
+
+document.getElementById('monthFilter')
+  .addEventListener('change', filterPaymentsByMonth);
+
+document.addEventListener('DOMContentLoaded', filterPaymentsByMonth);
+
+</script>
+
+<!--<script>
   const inputs = [
     'searchName','filterCategory',
     'filterPlan','filterAmount'
@@ -250,6 +333,6 @@
   document.getElementById('total-egresos').textContent = '$' + totalEgresos.toLocaleString('es-CO');
 }
 document.addEventListener('DOMContentLoaded', filterPayments);
-</script>
+</script>-->
 
 @endsection
