@@ -334,6 +334,55 @@ document.addEventListener('DOMContentLoaded', async () => {
   <div class="row mb-4">
     <div class="col-md-6">
       <section class="module-section">
+        <h3>⚠️ Clientes con plan vencido (últimos 5 días)</h3>
+        <div class="info-box">
+          <ul class="list-unstyled mb-0" id="clientesVencidosList">
+            <li>Cargando...</li>
+          </ul>
+        </div>
+      </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  fetch('/home/clientes-vencidos', {
+    credentials: 'same-origin',
+    headers: { 'Accept': 'application/json' }
+  })
+  .then(res => res.json())
+  .then(data => {
+    const list = document.getElementById('clientesVencidosList');
+    list.innerHTML = '';
+
+    if (data.length === 0) {
+      list.innerHTML = '<li><strong>No hay planes vencidos recientemente.</strong></li>';
+      return;
+    }
+
+    data.forEach(cliente => {
+      const fecha = new Date(cliente.vigencia_plan);
+      if (isNaN(fecha.getTime())) return;
+
+      const fechaFormateada = fecha.toLocaleDateString('es-CO');
+      const dias = parseInt(cliente.dias_vencido);
+      const texto = dias === 1 ? 'hace 1 día' : `hace ${dias} días`;
+
+      list.innerHTML += `
+        <li style="color: darkred;">
+          <strong>${cliente.nombre}</strong> – venció ${texto} (${fechaFormateada})
+        </li>
+      `;
+    });
+  })
+  .catch(() => {
+    document.getElementById('clientesVencidosList').innerHTML =
+      '<li><strong>Error al cargar datos.</strong></li>';
+  });
+});
+</script>
+    </div>
+
+    <div class="col-md-6">
+      <section class="module-section">
       <h3>📅 Clientes con menos de 3 clases disponibles</h3>
         <div class="info-box">
           <ul class="list-unstyled mb-0" id="clientesPorVencer">
@@ -347,8 +396,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           </ul>
         </div>
       </section>
-  </div> 
-
+    </div>
   </div>
 
         
