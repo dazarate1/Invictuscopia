@@ -85,7 +85,31 @@ class HomeController extends Controller
         return response()->json($clientes);
     }
 
-        public function proximosValoracion()
+        public function clientesVencidos()
+    {
+        $hoy = Carbon::now();
+
+        $clientes = DB::table('crudclientes.clientes')
+            ->select('nombre', 'vigencia_plan')
+            ->get()
+            ->filter(function ($cliente) use ($hoy) {
+                $vigencia = Carbon::parse($cliente->vigencia_plan);
+                $dias = $hoy->diffInDays($vigencia, false); // negativo si ya venció
+                return $dias >= -5 && $dias < 0;
+            })
+            ->map(function ($cliente) use ($hoy) {
+                $vigencia = Carbon::parse($cliente->vigencia_plan);
+                $cliente->dias_vencido = abs($hoy->diffInDays($vigencia, false));
+                return $cliente;
+            })
+            ->sortBy('dias_vencido')
+            ->take(8)
+            ->values();
+
+        return response()->json($clientes);
+    }
+
+    public function proximosValoracion()
     {
         $hoy    = Carbon::today();              // 00:00 de hoy
         $limite = Carbon::today()->addDays(5);  // +5 días
