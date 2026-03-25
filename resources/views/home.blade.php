@@ -70,6 +70,8 @@
       padding: 1rem;
       border-radius: .5rem;
       text-align: center;
+      max-height: 220px;
+      overflow-y: auto;
     }
     .chart-container {
       width: 300px;
