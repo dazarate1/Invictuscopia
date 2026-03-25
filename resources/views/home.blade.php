@@ -57,8 +57,14 @@
       border-radius: .5rem;
       padding: 1rem;
       box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      margin-bottom: 2rem;
-      height: 100%;
+      margin-bottom: 1.5rem;
+    }
+    .row {
+      gap: 0;
+    }
+    .col-md-6 {
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
     }
     .module-section h3 {
       margin-bottom: 1rem;
